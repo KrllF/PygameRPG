@@ -3,6 +3,7 @@ import pygame
 
 from config import *
 from weapon import Weapon_for_players
+from UI import User_Interface
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,15 +18,11 @@ class Player(pygame.sprite.Sprite):
         self.blinding_time = -10000
 
         # hp
-        self.maximum_hp = start_hp_player
+        self.health = start_hp_player
         self.current_hp = start_hp_player
         self.health_bar_length = 32
-        self.health_ratio = self.maximum_hp / self.health_bar_length
-
-        self.xp = start_xp_player
 
         self.attack = pygame.sprite.LayeredUpdates()
-        self.damage = start_damage_player
         self.can_attack = True
         self.attack_time = 0
 
@@ -45,33 +42,55 @@ class Player(pygame.sprite.Sprite):
         self.direction = [0, 0]
         self.view = [0, 0]
 
+        # player characteristics
+        self.level = 1
+        self.leveling_points = 0
+        self.exp = start_exp_player
         self.speed = start_speed_player
+        self.exp = start_exp_player
+        self.stamina = 1001
+        self.damage = start_damage_player
+
+        self.characteristics = {'health': self.health, 'speed': self.speed, 'damage': self.damage,
+                                'exp': self.exp}
+
+
+        self.upgrade_menu_open = False
+        self.ui = User_Interface(self)
 
     def input(self):
         keys = pygame.key.get_pressed()
+        mouse_pressed = pygame.mouse.get_pressed()
+
         if pygame.time.get_ticks() - self.blinding_time > 1000:
             self.player_blinding = False
-            if keys[pygame.K_UP]:
+            if keys[pygame.K_w]:
                 self.direction[1] = -1
                 self.view[0] = 0
                 self.view[1] = -1
-            elif keys[pygame.K_DOWN]:
+            elif keys[pygame.K_s]:
                 self.direction[1] = 1
                 self.view[0] = 0
                 self.view[1] = 1
             else:
                 self.direction[1] = 0
 
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_d]:
                 self.direction[0] = 1
                 self.view[0] = 1
                 self.view[1] = 0
-            elif keys[pygame.K_LEFT]:
+            elif keys[pygame.K_a]:
                 self.direction[0] = -1
                 self.view[0] = -1
                 self.view[1] = 0
             else:
                 self.direction[0] = 0
+
+            if keys[pygame.K_j]:
+                self.upgrade_menu_open = True
+                self.ui.draw_upgrade_menu()
+                if mouse_pressed[0]:
+                    self.ui.check_click(pygame.mouse.get_pos())
 
             if keys[pygame.K_SPACE]:
                 if self.attack_checker():
@@ -173,12 +192,36 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp <= 0:
             self.kill()
 
+    def update_level(self):
+        if self.exp >= 200:
+            self.exp -= 200
+            self.leveling_points += 1
+            self.level += 1
+
     def health_bar(self):
         pygame.draw.rect(self.game.screen, (255, 0, 0),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5, self.current_hp / self.health_ratio, 5))
-        pygame.draw.rect(self.game.screen, (255, 255, 255),(self.rect.topleft[0], self.rect.topleft[1] - 5,self.maximum_hp/self.health_ratio, 5), True)
+                         (self.rect.topleft[0], self.rect.topleft[1] - 5,
+                          self.current_hp / (self.characteristics['health'] / self.health_bar_length), 5))
+        pygame.draw.rect(self.game.screen, (255, 255, 255),
+                         (self.rect.topleft[0], self.rect.topleft[1] - 5,
+                          self.characteristics['health'] / (self.characteristics['health'] / self.health_bar_length),
+                          5), True)
+
+    def regeneration(self):
+        if self.current_hp < self.characteristics['health']:
+            self.current_hp += 0.001 * self.characteristics['health']
+        if self.current_hp > self.characteristics['health']:
+            self.current_hp = self.characteristics['health']
+
+    def draw_level(self):
+        pass
 
     def update(self):
+        print(self.characteristics['speed'])
+        self.regeneration()
+        print(self.leveling_points)
+        self.update_level()
+        self.ui.draw_ui()
         self.health_bar()
         self.player_death()
         self.input()

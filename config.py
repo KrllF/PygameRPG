@@ -1,6 +1,11 @@
 SIZE = (1080, 720)
 TILESIZE = 32
 FPS = 60
+FONT = 'fonts/Oswald-Medium.ttf'
+FONT_SIZE = 32
+
+BAR_W = 150
+BAR_H = 20
 
 #color
 WHITE = (255, 255, 255)
@@ -21,12 +26,12 @@ max_damage_player = 30
 
 player_weapon_cooldown = 1000
 
-start_xp_player = 0
+start_exp_player = 200
 
 #enemyis settings
 robber_hp = 50
 robber_xp = 1
-robber_damage = 10
+robber_damage = 1
 
 enemy_weapon_cooldown = 1500
 
@@ -49,7 +54,7 @@ tilemap = [
     'B.......B......B....B',
     'B.......B......BBB..B',
     'B...................B',
-    'B........RRRR.......B',
-    'B...................B',
+    'B........RRRR.RRRR......B',
+    'B...............R....B',
     'BBBBBBBBBBBBBBBBBBBBB',
 ]

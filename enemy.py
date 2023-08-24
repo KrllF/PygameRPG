@@ -12,7 +12,7 @@ class robber(pygame.sprite.Sprite):
         self._layer = ENEMY_LAYER
 
         self.loop = 1
-
+        self.cooldown_check = False
         #hp
         self.maximum_hp = robber_hp
         self.current_hp = robber_hp
@@ -38,7 +38,7 @@ class robber(pygame.sprite.Sprite):
 
         self.attack = pygame.sprite.LayeredUpdates()
         self.can_attack = False
-        self.damage = robber_damage
+        self.damage = 20
         self.attack_time = 0
 
         self.direction = [0, 0]
@@ -130,6 +130,7 @@ class robber(pygame.sprite.Sprite):
     def robber_movements(self):
         if pygame.time.get_ticks() - self.blinding_time > 1500:
             self.blinding_time = False
+            self.cooldown_check = False
             for player in self.game.players:
                 dist = math.sqrt(
                     (player.rect.centerx - self.rect.centerx) ** 2 + (player.rect.centery - self.rect.centery) ** 2)
@@ -154,8 +155,10 @@ class robber(pygame.sprite.Sprite):
                     if self.attack_checker():
                         self.attack_time = pygame.time.get_ticks()
                         Weapon_for_enemyis(self.game, self, (self.x, self.y))
+
         else:
             self.view = [0, 0]
+            self.cooldown_check = True
             self.direction_vector = [0, 0]
 
     def robber_collide(self):
@@ -183,6 +186,7 @@ class robber(pygame.sprite.Sprite):
 
     def update(self):
         self.health_bar()
+
         self.robber_death()
         self.robber_movements()
         self.robber_animation()

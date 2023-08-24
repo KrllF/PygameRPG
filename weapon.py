@@ -79,7 +79,7 @@ class Weapon_for_players(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
         for enemy in hits:
             if enemy.current_hp - self.player.damage <= 0:
-                self.player.xp += 1
+                self.player.exp += 50
 
             enemy.enemy_blinding = True
             enemy.blinding_time = pygame.time.get_ticks()
@@ -169,6 +169,11 @@ class Weapon_for_enemyis(pygame.sprite.Sprite):
             player.player_blinding = True
             player.blinding_time = pygame.time.get_ticks()
 
+    def check_enemy(self):
+        if self.robber.current_hp <= 0 and self.robber.cooldown_check == True:
+            self.kill()
+
     def update(self):
+        self.check_enemy()
         self.collide_with_players()
         self.direction()

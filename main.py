@@ -8,6 +8,8 @@ from collision import Spritesheet
 from collision import Ground
 from enemy import *
 
+pygame.display.set_caption('GAME WITH RPG ELEMENTS')
+
 
 class SGAME:
     def __init__(self):
