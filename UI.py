@@ -14,15 +14,16 @@ class User_Interface:
 
         # upgrade menu
         self.health_image1 = pygame.transform.scale(
-            pygame.image.load('imagestest/attack.png').convert_alpha(), (200, 250))
-        self.cooldown_image = pygame.transform.scale(
-            pygame.image.load('imagestest/attack.png').convert_alpha(), (200, 250))
-        self.melee_attack_image = pygame.transform.scale(pygame.image.load('imagestest/attack.png').convert_alpha(),
+            pygame.image.load('imagestest/health.jpg').convert_alpha(), (200, 250))
+        self.speed_image = pygame.transform.scale(pygame.image.load('imagestest/speed.png').convert_alpha(),
                                                          (200, 250))
+        self.damage_image = pygame.transform.scale(
+            pygame.image.load('imagestest/damage.png').convert_alpha(), (200, 250))
 
-        self.health_image1_rect = self.health_image1.get_rect(topleft=(250, 200))
-        self.cooldown_image_rect = self.cooldown_image.get_rect(topleft=(650, 200))
-        self.melee_attack_image_rect = self.melee_attack_image.get_rect(topleft=(450, 200))
+
+        self.health_image_rect = self.health_image1.get_rect(topleft=(250, 200))
+        self.damage_image_rect = self.damage_image.get_rect(topleft=(650, 200))
+        self.speed_image_rect = self.speed_image.get_rect(topleft=(450, 200))
         self.buttons_upgrade = pygame.sprite.Group()
         self.create_buttons_upgrade()
 
@@ -41,8 +42,8 @@ class User_Interface:
 
     def create_buttons_upgrade(self):
         for i in range(3):
-            self.buttons_upgrade.add(Button_and_name((self.health_image1_rect.x + i * 200,
-                                                      self.health_image1_rect.y + self.health_image1_rect.height),
+            self.buttons_upgrade.add(Button_and_name((self.health_image_rect.x + i * 200,
+                                                      self.health_image_rect.y + self.health_image_rect.height),
                                                      list(self.player.characteristics.keys())[i]))
 
     def check_click(self, mouse_pos):
@@ -73,18 +74,18 @@ class User_Interface:
             self.player.game.screen.blit(button.name_text, button.text_rect)
 
         # hp
-        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.health_image1_rect)
-        pygame.draw.rect(self.player.game.screen, '#AE6524', self.health_image1_rect, 4)
-        self.player.game.screen.blit(self.health_image1, self.health_image1_rect)
+        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.health_image_rect)
+        pygame.draw.rect(self.player.game.screen, '#AE6524', self.health_image_rect, 4)
+        self.player.game.screen.blit(self.health_image1, self.health_image_rect)
 
         # melee_attack
-        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.melee_attack_image_rect)
-        pygame.draw.rect(self.player.game.screen, '#AE6524', self.melee_attack_image_rect, 4)
-        self.player.game.screen.blit(self.melee_attack_image, self.melee_attack_image_rect)
+        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.speed_image_rect)
+        pygame.draw.rect(self.player.game.screen, '#AE6524', self.speed_image_rect, 4)
+        self.player.game.screen.blit(self.speed_image, self.speed_image_rect)
 
-        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.cooldown_image_rect)
-        pygame.draw.rect(self.player.game.screen, '#AE6524', self.cooldown_image_rect, 4)
-        self.player.game.screen.blit(self.cooldown_image, self.cooldown_image_rect)
+        pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.damage_image_rect)
+        pygame.draw.rect(self.player.game.screen, '#AE6524', self.damage_image_rect, 4)
+        self.player.game.screen.blit(self.damage_image, self.damage_image_rect)
 
         self.buttons_upgrade.update()
 
