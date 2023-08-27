@@ -24,7 +24,7 @@ class SGAME:
         self.terrain_spritesheet = Spritesheet("imagestest/terrain.png")
         self.enemy_spritesheet = Spritesheet("imagestest/enemy.png")
 
-        self.font = pygame.font.SysFont('ariel', 32)
+        self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
 
     def create_map(self):
         for i, row in enumerate(tilemap):

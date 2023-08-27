@@ -16,10 +16,9 @@ class User_Interface:
         self.health_image1 = pygame.transform.scale(
             pygame.image.load('imagestest/health.jpg').convert_alpha(), (200, 250))
         self.speed_image = pygame.transform.scale(pygame.image.load('imagestest/speed.png').convert_alpha(),
-                                                         (200, 250))
+                                                  (200, 250))
         self.damage_image = pygame.transform.scale(
             pygame.image.load('imagestest/damage.png').convert_alpha(), (200, 250))
-
 
         self.health_image_rect = self.health_image1.get_rect(topleft=(250, 200))
         self.damage_image_rect = self.damage_image.get_rect(topleft=(650, 200))
@@ -29,16 +28,15 @@ class User_Interface:
 
     def draw_bars_of_characteristics(self):
         # exp
-        pygame.draw.rect(self.player.game.screen, 'black', self.exp_bar_back, 8)
 
-        exp_rect = self.exp_bar_back.copy()
-        exp_rect.width = (BAR_W + 150) * (self.player.exp / self.player.characteristics['exp'])
-        exp_rect.height = BAR_H - 8
+        pygame.draw.rect(self.player.game.screen, 'yellow',
+                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10, self.player.exp // 2 / (self.player.characteristics['health'] / self.player.health_bar_length), 5))
 
-        exp_rect.top += 2
         pygame.draw.rect(self.player.game.screen, (255, 255, 255),
-                         (15, 650, self.exp_bar_back.width, BAR_H - 4), True)
-        pygame.draw.rect(self.player.game.screen, 'yellow', exp_rect, 6)
+                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10,
+                          self.player.characteristics['health'] / (
+                                      self.player.characteristics['health'] / self.player.health_bar_length),
+                          5), True)
 
     def create_buttons_upgrade(self):
         for i in range(3):

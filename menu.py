@@ -12,7 +12,7 @@ class Menu_button:
         self.bg = bg
 
         self.content = text
-        self.font = pygame.font.SysFont('arial', fontsize)
+        self.font = pygame.font.Font('fonts/EightBits.ttf', fontsize)
 
         self.image = pygame.Surface((self.width, self.height))
         self.image.fill(self.bg)

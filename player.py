@@ -54,7 +54,6 @@ class Player(pygame.sprite.Sprite):
         self.characteristics = {'health': self.health, 'speed': self.speed, 'damage': self.damage,
                                 'exp': self.exp}
 
-
         self.upgrade_menu_open = False
         self.ui = User_Interface(self)
 
@@ -214,9 +213,11 @@ class Player(pygame.sprite.Sprite):
             self.current_hp = self.characteristics['health']
 
     def draw_level(self):
-        pass
+        level_text = self.game.font.render(str(self.level), False,1 )
+        self.game.screen.blit(level_text,(self.rect.topleft[0] - 10, self.rect.topleft[1] - 23))
 
     def update(self):
+        self.draw_level()
         print(self.characteristics['speed'])
         self.regeneration()
         print(self.leveling_points)
