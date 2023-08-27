@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+from menu import *
 from config import *
 from collision import BLOCK
 from player import *
@@ -22,6 +23,8 @@ class SGAME:
         self.character_spritesheet = Spritesheet("imagestest/character.png")
         self.terrain_spritesheet = Spritesheet("imagestest/terrain.png")
         self.enemy_spritesheet = Spritesheet("imagestest/enemy.png")
+
+        self.font = pygame.font.SysFont('ariel', 32)
 
     def create_map(self):
         for i, row in enumerate(tilemap):
@@ -69,7 +72,55 @@ class SGAME:
         pass
 
     def menu(self):
-        pass
+        local_game = Menu_button((415, 50), 250, 100, BLACK, WHITE, 'Local play', 32, 2)
+        about_game = Menu_button((415, 200), 250, 100, BLACK, WHITE, 'About game', 32, 2)
+        setting = Menu_button((415, 350), 250, 100, BLACK, WHITE, 'Setting', 32, 2)
+        exit_game = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)
+        back = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
+        intro = True
+        about_game_bool = False
+        setting_bool = False
+        while intro:
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    intro = False
+                    self.running = False
+
+            mouse_pos = pygame.mouse.get_pos()
+
+            if about_game_bool or setting_bool:
+                if back.is_pressed(mouse_pos, events):
+                    about_game_bool = False
+                    setting_bool = False
+            else:
+                if local_game.is_pressed(mouse_pos, events):
+                    intro = False
+
+                if about_game.is_pressed(mouse_pos, events):
+                    about_game_bool = True
+
+                if setting.is_pressed(mouse_pos, events):
+                    setting_bool = True
+
+                if exit_game.is_pressed(mouse_pos, events):
+                    pygame.quit()
+                    sys.exit()
+
+            self.screen.fill(BLACK)
+
+            if about_game_bool:
+                self.screen.blit(back.image, back.rect)
+            elif setting_bool:
+                self.screen.blit(back.image, back.rect)
+            else:
+                self.screen.blit(local_game.image, local_game.rect)
+                self.screen.blit(about_game.image, about_game.rect)
+                self.screen.blit(setting.image, setting.rect)
+                self.screen.blit(exit_game.image, exit_game.rect)
+
+            self.clock.tick(FPS)
+            pygame.display.update()
 
 
 game = SGAME()
