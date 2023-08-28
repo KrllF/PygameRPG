@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
         self.view = [0, 0]
 
         # player characteristics
-        self.level = 1
+        self.level = 0
         self.leveling_points = 0
         self.exp = start_exp_player
         self.speed = start_speed_player
@@ -214,7 +214,7 @@ class Player(pygame.sprite.Sprite):
 
     def draw_level(self):
         level_text = self.game.font.render(str(self.level), False,1 )
-        self.game.screen.blit(level_text,(self.rect.topleft[0] - 10, self.rect.topleft[1] - 23))
+        self.game.screen.blit(level_text,(self.rect.topleft[0] - 13, self.rect.topleft[1] - 23))
 
     def update(self):
         self.draw_level()
