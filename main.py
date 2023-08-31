@@ -8,8 +8,12 @@ from player import *
 from collision import Spritesheet
 from collision import Ground
 from enemy import *
+from database import *
 
 pygame.display.set_caption('GAME WITH RPG ELEMENTS')
+
+# data_base
+add_player(1)
 
 
 class SGAME:
@@ -25,6 +29,7 @@ class SGAME:
         self.enemy_spritesheet = Spritesheet("imagestest/enemy.png")
 
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
+        self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)
 
     def create_map(self):
         for i, row in enumerate(tilemap):
@@ -77,9 +82,12 @@ class SGAME:
         setting = Menu_button((415, 350), 250, 100, BLACK, WHITE, 'Setting', 32, 2)
         exit_game = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)
         back = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
+        statistics_game = Menu_button((800, 50), 200, 100, BLACK, WHITE, 'Statistics', 32, 2)
+        reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         intro = True
         about_game_bool = False
         setting_bool = False
+        statistics_bool = False
         while intro:
             events = pygame.event.get()
             for event in events:
@@ -89,13 +97,21 @@ class SGAME:
 
             mouse_pos = pygame.mouse.get_pos()
 
-            if about_game_bool or setting_bool:
+            if reset_kills_game.is_pressed(mouse_pos,events):
+                reset_kills(1)
+
+            if about_game_bool or setting_bool or statistics_bool:
                 if back.is_pressed(mouse_pos, events):
                     about_game_bool = False
                     setting_bool = False
+                    statistics_bool = False
             else:
                 if local_game.is_pressed(mouse_pos, events):
                     intro = False
+
+                if statistics_game.is_pressed(mouse_pos, events):
+                    statistics_bool = True
+
 
                 if about_game.is_pressed(mouse_pos, events):
                     about_game_bool = True
@@ -111,12 +127,27 @@ class SGAME:
 
             if about_game_bool:
                 self.screen.blit(back.image, back.rect)
+                self.screen.blit(self.font.render(ABOUT_GAME, True, 'WHITE'), (10, 10))
+                self.screen.blit(self.font.render(ABOUT_GAME1, True, 'WHITE'), (10, 30))
+                self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), (10, 50))
+
             elif setting_bool:
                 self.screen.blit(back.image, back.rect)
+            elif statistics_bool:
+                self.screen.blit(back.image, back.rect)
+                self.screen.blit(reset_kills_game.image, reset_kills_game.rect)
+                self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), (440, 50))
+                self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 150))
+                self.screen.blit(self.font.render(str(get_kills(1)), True, 'White'), (170, 150))
+                self.screen.blit(self.font.render("PLAY TIME:", True, "White"), (100, 250))
+
+
+
             else:
                 self.screen.blit(local_game.image, local_game.rect)
                 self.screen.blit(about_game.image, about_game.rect)
                 self.screen.blit(setting.image, setting.rect)
+                self.screen.blit(statistics_game.image, statistics_game.rect)
                 self.screen.blit(exit_game.image, exit_game.rect)
 
             self.clock.tick(FPS)

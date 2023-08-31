@@ -42,6 +42,11 @@ ENEMY_LAYER = 3
 PLAYER_LAYER = 4
 
 
+
+ABOUT_GAME = "Genre: Battle royale. From 2 to 4 players. The goal: to survive last. There are mobs on the map, killing which "
+ABOUT_GAME1 = "earns experience points, which go to improve characteristics, and money that goes to buy and improve  "
+ABOUT_GAME2 = "equipment. There is a boss on the map (like Roshan from Dota), killing which you get a bonus."
+
 tilemap = [
     'BBBBBBBBBBBBBBBBBBBBB',
     'B...................B',

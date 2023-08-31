@@ -1,6 +1,6 @@
 import pygame
 from config import *
-
+from database import *
 
 class Weapon_for_players(pygame.sprite.Sprite):
     def __init__(self, game, player, pos):
@@ -80,6 +80,8 @@ class Weapon_for_players(pygame.sprite.Sprite):
         for enemy in hits:
             if enemy.current_hp - self.player.damage <= 0:
                 self.player.exp += 50
+                update_kills(1)
+
 
             enemy.enemy_blinding = True
             enemy.blinding_time = pygame.time.get_ticks()
