@@ -6,7 +6,6 @@ from config import *
 from collision import BLOCK
 from player import *
 from collision import Spritesheet
-from collision import Ground
 from enemy import *
 from database import *
 
@@ -111,6 +110,7 @@ class SGAME:
             self.update()
             if self.game_over_bool:
                 self.running = False
+
         self.running = False
 
     def game_over(self):
@@ -128,6 +128,8 @@ class SGAME:
                     sys.exit()
 
             if restart_buttom.is_pressed(mouse_pos, events):
+                update_number_of_attempts(1)
+
                 game_over_bool = False
                 self.__init__()
                 self.new_game()
@@ -136,8 +138,10 @@ class SGAME:
                     self.game_over()
 
             if menu_buttom.is_pressed(mouse_pos, events):
+                update_number_of_attempts(1)
                 game_over_bool = False
                 self.__init__()
+
                 self.menu()
 
             self.screen.fill(BLACK)
@@ -156,7 +160,7 @@ class SGAME:
         statistics_game = Menu_button((800, 50), 200, 100, BLACK, WHITE, 'Statistics', 32, 2)
         reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         reset_play_time_game = Menu_button((800, 230), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
-        reset_number_of_attempts_game = Menu_button((800, 330), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
+        reset_number_of_attempts_game = Menu_button((800, 330), 100, 50, BLACK, WHITE, 'Reset NOA', 32, 2)
         sliderFPS = Slider((SIZE[0] // 2, SIZE[1] // 2 - 100), (200, 50), 0.5, 30, 120)
 
         intro = True
@@ -225,10 +229,12 @@ class SGAME:
                 self.screen.blit(self.font1.render("SETTING", True, 'WHITE'), (470, 50))
                 sliderFPS.render(self)
                 self.FPS = sliderFPS.get_value()
-                self.screen.blit(self.font.render("FPS:", True, 'WHITE'), (300, SIZE[1]//2-115))
-                self.screen.blit(self.font.render("Game acceleration:", True, 'WHITE'), (SIZE[0] // 2 - 85, SIZE[1] // 2 - 175))
+                self.screen.blit(self.font.render("FPS:", True, 'WHITE'), (300, SIZE[1] // 2 - 115))
+                self.screen.blit(self.font.render("Game acceleration:", True, 'WHITE'),
+                                 (SIZE[0] // 2 - 85, SIZE[1] // 2 - 175))
 
-                self.screen.blit(self.font.render(str(int(sliderFPS.get_value())), True, 'WHITE'), (SIZE[0]//2-8, SIZE[1]//2-60))
+                self.screen.blit(self.font.render(str(int(sliderFPS.get_value())), True, 'WHITE'),
+                                 (SIZE[0] // 2 - 8, SIZE[1] // 2 - 60))
 
                 self.screen.blit(back.image, back.rect)
             elif statistics_bool:
