@@ -226,6 +226,8 @@ class SGAME:
                 sliderFPS.render(self)
                 self.FPS = sliderFPS.get_value()
                 self.screen.blit(self.font.render("FPS:", True, 'WHITE'), (300, SIZE[1]//2-115))
+                self.screen.blit(self.font.render("Game acceleration:", True, 'WHITE'), (SIZE[0] // 2 - 85, SIZE[1] // 2 - 175))
+
                 self.screen.blit(self.font.render(str(int(sliderFPS.get_value())), True, 'WHITE'), (SIZE[0]//2-8, SIZE[1]//2-60))
 
                 self.screen.blit(back.image, back.rect)
