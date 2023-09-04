@@ -375,3 +375,4 @@ class Robber_boss(pygame.sprite.Sprite):
         self.robber_boss_death()
         self.robber_boss_movements()
 #       self.robber_animation()
+

@@ -130,3 +130,4 @@ class Button_and_name(pygame.sprite.Sprite):
 
     def update(self):
         self.cooldown()
+

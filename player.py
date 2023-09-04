@@ -238,3 +238,4 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.player_collide_with_blocks()
         self.player_animation()
+
