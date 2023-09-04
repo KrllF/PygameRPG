@@ -114,6 +114,7 @@ class SGAME:
                 self.running = False
         self.end_game_time = pygame.time.get_ticks()
         update_play_time(1, self.end_game_time - self.start_game_time)
+        update_max_kills(1, self.player.kill_for_session)
         self.running = False
 
     def game_over(self):
@@ -164,6 +165,7 @@ class SGAME:
         reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         reset_play_time_game = Menu_button((800, 230), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
         reset_number_of_attempts_game = Menu_button((800, 330), 100, 50, BLACK, WHITE, 'Reset NOA', 32, 2)
+        reset_max_kills_game = Menu_button((800, 430), 100, 50, BLACK, WHITE, 'Reset mkills', 32, 2)
         sliderFPS = Slider((SIZE[0] // 2, SIZE[1] // 2 - 100), (200, 50), 0.5, 30, 120)
 
         intro = True
@@ -245,6 +247,7 @@ class SGAME:
                 self.screen.blit(reset_kills_game.image, reset_kills_game.rect)
                 self.screen.blit(reset_play_time_game.image, reset_play_time_game.rect)
                 self.screen.blit(reset_number_of_attempts_game.image, reset_number_of_attempts_game.rect)
+                self.screen.blit( reset_max_kills_game.image,  reset_max_kills_game.rect)
                 self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), (440, 50))
 
                 self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 150))
@@ -255,6 +258,9 @@ class SGAME:
 
                 self.screen.blit(self.font.render("NUMBER OF ATTEMPTS:", True, 'WHITE'), (100, 350))
                 self.screen.blit(self.font.render(str(get_number_of_attempts(1)), True, 'WHITE'), (320, 350))
+
+                self.screen.blit(self.font.render("MAX KILLS:", True, 'WHITE'), (100, 450))
+                self.screen.blit(self.font.render(str(get_max_kills(1)), True, 'WHITE'), (220, 450))
 
 
             else:
