@@ -19,6 +19,7 @@ add_player(1)
 class SGAME:
     def __init__(self):
         pygame.init()
+        self.game_over_bool = False
 
         self.screen = pygame.display.set_mode(SIZE)
         self.clock = pygame.time.Clock()
@@ -39,6 +40,8 @@ class SGAME:
                     BLOCK(self, (j, i))
                 if column == "R":
                     robber(self, (j, i))
+                if column == "b":
+                    Robber_boss(self, (j, i))
                 if column == "P":
                     Player(self, (j, i))
 
@@ -66,15 +69,53 @@ class SGAME:
         self.all_sprites.draw(self.screen)
         self.clock.tick(FPS)
 
+    def check_main(self):
+        if self.players.empty():
+            self.running = False
+
     def main(self):
         while self.running:
             self.events()
             self.update()
             self.draw()
+            if self.game_over_bool:
+                self.running = False
         self.running = False
 
     def game_over(self):
-        pass
+        restart_buttom = Menu_button((415, 300), 250, 100, BLACK, WHITE, 'Restart', 32, 2)
+        menu_buttom = Menu_button((490, 500), 100, 50, BLACK, WHITE, 'Menu', 32, 2)
+        game_over_bool = True
+        for sprite in self.all_sprites:
+            sprite.kill()
+        while game_over_bool:
+            events = pygame.event.get()
+            mouse_pos = pygame.mouse.get_pos()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            if restart_buttom.is_pressed(mouse_pos, events):
+                game_over_bool = False
+                self.__init__()
+                self.new_game()
+                while self.running:
+                    self.main()
+                    self.game_over()
+
+
+            if menu_buttom.is_pressed(mouse_pos, events):
+                game_over_bool = False
+                self.__init__()
+                self.menu()
+
+            self.screen.fill(BLACK)
+            self.screen.blit(restart_buttom.image, restart_buttom.rect)
+            self.screen.blit(menu_buttom.image, menu_buttom.rect)
+
+            self.clock.tick(60)
+            pygame.display.update()
 
     def menu(self):
         local_game = Menu_button((415, 50), 250, 100, BLACK, WHITE, 'Local play', 32, 2)
@@ -84,10 +125,12 @@ class SGAME:
         back = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
         statistics_game = Menu_button((800, 50), 200, 100, BLACK, WHITE, 'Statistics', 32, 2)
         reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
+        reset_play_time_game = Menu_button((800, 230), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
         intro = True
         about_game_bool = False
         setting_bool = False
         statistics_bool = False
+
         while intro:
             events = pygame.event.get()
             for event in events:
@@ -97,8 +140,10 @@ class SGAME:
 
             mouse_pos = pygame.mouse.get_pos()
 
-            if reset_kills_game.is_pressed(mouse_pos,events):
+            if reset_kills_game.is_pressed(mouse_pos, events):
                 reset_kills(1)
+            if reset_play_time_game.is_pressed(mouse_pos, events):
+                reset_play_time(1)
 
             if about_game_bool or setting_bool or statistics_bool:
                 if back.is_pressed(mouse_pos, events):
@@ -108,10 +153,14 @@ class SGAME:
             else:
                 if local_game.is_pressed(mouse_pos, events):
                     intro = False
+                    self.new_game()
+
+                    while self.running:
+                        self.main()
+                        self.game_over()
 
                 if statistics_game.is_pressed(mouse_pos, events):
                     statistics_bool = True
-
 
                 if about_game.is_pressed(mouse_pos, events):
                     about_game_bool = True
@@ -136,10 +185,14 @@ class SGAME:
             elif statistics_bool:
                 self.screen.blit(back.image, back.rect)
                 self.screen.blit(reset_kills_game.image, reset_kills_game.rect)
+                self.screen.blit(reset_play_time_game.image, reset_play_time_game.rect)
                 self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), (440, 50))
                 self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 150))
-                self.screen.blit(self.font.render(str(get_kills(1)), True, 'White'), (170, 150))
-                self.screen.blit(self.font.render("PLAY TIME:", True, "White"), (100, 250))
+                self.screen.blit(self.font.render(str(get_kills(1)), True, 'WHITE'), (170, 150))
+
+                self.screen.blit(self.font.render("PLAY TIME:", True, 'WHITE'), (100, 250))
+                self.screen.blit(self.font.render(str(get_play_time(1)) + ' sec', True, 'WHITE'), (250, 250))
+
 
 
 
@@ -156,11 +209,6 @@ class SGAME:
 
 game = SGAME()
 game.menu()
-game.new_game()
-
-while game.running:
-    game.main()
-    game.game_over()
 
 pygame.quit()
 sys.exit()

@@ -28,12 +28,20 @@ player_weapon_cooldown = 1000
 
 start_exp_player = 200
 
+blindtime = 500
+
 #enemyis settings
 robber_hp = 50
 robber_xp = 1
-robber_damage = 1
+robber_damage = 20
+
+robber_boss_hp = 300
+robber_boss_xp = 1
+robber_boss_damage = 35
+robber_boss_speed = 1
 
 enemy_weapon_cooldown = 1500
+blindtime_robber = 600
 
 #Layer
 GROUND_LAYER = 1
@@ -52,14 +60,14 @@ tilemap = [
     'B...................B',
     'B..R............BB..B',
     'B...................B',
-    'B...................B',
+    'B.............b.....B',
     'B...........P.......B',
     'B...................B',
     'B.....BBB.......R...B',
     'B.......B......B....B',
     'B.......B......BBB..B',
     'B...................B',
-    'B........RRRR.RRRR......B',
+    'B.b......RRRR.RRRR......B',
     'B...............R....B',
     'BBBBBBBBBBBBBBBBBBBBB',
 ]

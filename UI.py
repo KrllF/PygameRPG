@@ -7,8 +7,11 @@ from config import *
 class User_Interface:
     def __init__(self, player):
         self.player = player
+        self.time_now = 0
 
-        self.font = pygame.font.Font(FONT, FONT_SIZE)
+        self.font = pygame.font.Font('fonts/EightBits.ttf', FONT_SIZE)
+        self.last_characteristic = None
+        self.upgrade_bool = True
         # bars
         self.exp_bar_back = pygame.Rect(15, 650, BAR_W + 150, BAR_H - 4)
 
@@ -30,13 +33,18 @@ class User_Interface:
         # exp
 
         pygame.draw.rect(self.player.game.screen, 'yellow',
-                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10, self.player.exp // 2 / (self.player.characteristics['health'] / self.player.health_bar_length), 5))
+                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10, self.player.exp // 2 / (
+                                 self.player.characteristics['health'] / self.player.health_bar_length), 5))
 
         pygame.draw.rect(self.player.game.screen, (255, 255, 255),
                          (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10,
                           self.player.characteristics['health'] / (
-                                      self.player.characteristics['health'] / self.player.health_bar_length),
+                                  self.player.characteristics['health'] / self.player.health_bar_length),
                           5), True)
+
+    def draw_kill_for_session(self):
+        self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
+                                     (546, 50))
 
     def create_buttons_upgrade(self):
         for i in range(3):
@@ -52,10 +60,15 @@ class User_Interface:
                 button.click = True
                 break
 
+    def timer_upgrade(self):
+        pass
+
     def upgrade_characteristic(self, characteristic_name):
-        if self.player.leveling_points > 0:
-            self.player.leveling_points -= 1
-            self.player.characteristics[characteristic_name] *= 1.10
+            if self.player.leveling_points > 0:
+                self.player.leveling_points -= 1
+                self.player.characteristics[characteristic_name] *= 1.10
+                self.player.characteristics_level[characteristic_name] += 1
+
 
     def draw_upgrade_menu(self):
         for button in self.buttons_upgrade:
@@ -75,21 +88,26 @@ class User_Interface:
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.health_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.health_image_rect, 4)
         self.player.game.screen.blit(self.health_image1, self.health_image_rect)
-
+        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['health']), True, 'BLACK'),
+                                     (346, self.health_image_rect.y + self.health_image_rect.height + 45))
         # melee_attack
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.speed_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.speed_image_rect, 4)
         self.player.game.screen.blit(self.speed_image, self.speed_image_rect)
+        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['speed']), True, 'BLACK'),
+                                     (546, self.health_image_rect.y + self.health_image_rect.height + 45))
 
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.damage_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.damage_image_rect, 4)
         self.player.game.screen.blit(self.damage_image, self.damage_image_rect)
+        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['damage']), True, 'BLACK'),
+                                     (746, self.health_image_rect.y + self.health_image_rect.height + 45))
 
         self.buttons_upgrade.update()
 
     def draw_ui(self):
         self.draw_bars_of_characteristics()
-
+        self.draw_kill_for_session()
 
 class Button_and_name(pygame.sprite.Sprite):
     def __init__(self, pos, characteristic_name):
@@ -99,7 +117,7 @@ class Button_and_name(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.characteristic_name = characteristic_name
         self.text_bg_rect = pygame.Rect(self.rect.left, self.rect.y - 300, self.rect.width, 50)
-        self.font = pygame.font.Font(FONT, FONT_SIZE)
+        self.font = pygame.font.Font('fonts/EightBits.ttf', FONT_SIZE)
         self.name_text = self.font.render(self.characteristic_name, False, (255, 0, 0))
         self.text_rect = self.name_text.get_rect(center=(self.rect.centerx, self.rect.y - 280))
         self.click = False

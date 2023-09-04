@@ -13,7 +13,7 @@ class Weapon_for_players(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = pos[0]
         self.y = pos[1]
-        self.image = pygame.Surface((20, 20))
+        self.image = pygame.Surface((30, 30))
         self.rect = self.image.get_rect(center=player.rect.center)
 
     def direction(self):
@@ -78,14 +78,19 @@ class Weapon_for_players(pygame.sprite.Sprite):
     def collide_with_enemy(self):
         hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
         for enemy in hits:
-            if enemy.current_hp - self.player.damage <= 0:
-                self.player.exp += 50
-                update_kills(1)
-
-
+            if type(enemy).__name__ == "robber":
+                if enemy.current_hp - self.player.damage <= 0:
+                    self.player.exp += 50
+                    self.player.kill_for_session += 1
+                    update_kills(1)
+            if type(enemy).__name__ == "Robber_boss":
+                if enemy.current_hp - self.player.damage <= 0:
+                    self.player.exp += 200
+                    self.player.kill_for_session += 1
+                    update_kills(1)
             enemy.enemy_blinding = True
             enemy.blinding_time = pygame.time.get_ticks()
-            enemy.current_hp -= self.player.damage
+            enemy.current_hp -= self.player.characteristics['damage']
 
     def update(self):
         self.direction()
@@ -104,7 +109,7 @@ class Weapon_for_enemyis(pygame.sprite.Sprite):
 
         self.x = pos[0]
         self.y = pos[1]
-        self.image = pygame.Surface((20, 20))
+        self.image = pygame.Surface((40, 40))
         self.rect = self.image.get_rect(center=self.robber.rect.center)
 
     def direction(self):

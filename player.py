@@ -4,7 +4,7 @@ import pygame
 from config import *
 from weapon import Weapon_for_players
 from UI import User_Interface
-
+from database import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, pos):
@@ -51,17 +51,26 @@ class Player(pygame.sprite.Sprite):
         self.stamina = 1001
         self.damage = start_damage_player
 
+        self.health_level = 1
+        self.speed_level = 1
+        self.damage_level = 1
+
         self.characteristics = {'health': self.health, 'speed': self.speed, 'damage': self.damage,
                                 'exp': self.exp}
+        self.characteristics_level = {'health': self.health_level, 'speed': self.speed_level,
+                                      'damage': self.damage_level}
 
         self.upgrade_menu_open = False
         self.ui = User_Interface(self)
+
+        self.kill_for_session = 0
+        self.life_time = 0
 
     def input(self):
         keys = pygame.key.get_pressed()
         mouse_pressed = pygame.mouse.get_pressed()
 
-        if pygame.time.get_ticks() - self.blinding_time > 1000:
+        if pygame.time.get_ticks() - self.blinding_time > blindtime:
             self.player_blinding = False
             if keys[pygame.K_w]:
                 self.direction[1] = -1
@@ -189,6 +198,9 @@ class Player(pygame.sprite.Sprite):
 
     def player_death(self):
         if self.current_hp <= 0:
+            self.life_time = pygame.time.get_ticks() // 1000
+            update_play_time(1, self.life_time)
+            self.game.game_over_bool = True
             self.kill()
 
     def update_level(self):
@@ -213,14 +225,12 @@ class Player(pygame.sprite.Sprite):
             self.current_hp = self.characteristics['health']
 
     def draw_level(self):
-        level_text = self.game.font.render(str(self.level), False,1 )
-        self.game.screen.blit(level_text,(self.rect.topleft[0] - 13, self.rect.topleft[1] - 23))
+        level_text = self.game.font.render(str(self.level), False, 1)
+        self.game.screen.blit(level_text, (self.rect.topleft[0] - 13, self.rect.topleft[1] - 23))
 
     def update(self):
         self.draw_level()
-        print(self.characteristics['speed'])
         self.regeneration()
-        print(self.leveling_points)
         self.update_level()
         self.ui.draw_ui()
         self.health_bar()
