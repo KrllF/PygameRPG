@@ -2,6 +2,7 @@ import pygame
 from config import *
 from database import *
 
+
 class Weapon_for_players(pygame.sprite.Sprite):
     def __init__(self, game, player, pos):
         self.game = game
@@ -184,4 +185,3 @@ class Weapon_for_enemyis(pygame.sprite.Sprite):
         self.check_enemy()
         self.collide_with_players()
         self.direction()
-

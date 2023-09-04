@@ -64,11 +64,10 @@ class User_Interface:
         pass
 
     def upgrade_characteristic(self, characteristic_name):
-            if self.player.leveling_points > 0:
-                self.player.leveling_points -= 1
-                self.player.characteristics[characteristic_name] *= 1.10
-                self.player.characteristics_level[characteristic_name] += 1
-
+        if self.player.leveling_points > 0:
+            self.player.leveling_points -= 1
+            self.player.characteristics[characteristic_name] *= 1.10
+            self.player.characteristics_level[characteristic_name] += 1
 
     def draw_upgrade_menu(self):
         for button in self.buttons_upgrade:
@@ -109,6 +108,7 @@ class User_Interface:
         self.draw_bars_of_characteristics()
         self.draw_kill_for_session()
 
+
 class Button_and_name(pygame.sprite.Sprite):
     def __init__(self, pos, characteristic_name):
         super().__init__()
@@ -130,4 +130,3 @@ class Button_and_name(pygame.sprite.Sprite):
 
     def update(self):
         self.cooldown()
-

@@ -6,6 +6,7 @@ from weapon import Weapon_for_players
 from UI import User_Interface
 from database import *
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, pos):
         self.oldX = None
@@ -200,6 +201,7 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp <= 0:
             self.life_time = pygame.time.get_ticks() // 1000
             update_play_time(1, self.life_time)
+            update_number_of_attempts(1)
             self.game.game_over_bool = True
             self.kill()
 
@@ -238,4 +240,3 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.player_collide_with_blocks()
         self.player_animation()
-

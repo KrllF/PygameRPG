@@ -104,7 +104,6 @@ class SGAME:
                     self.main()
                     self.game_over()
 
-
             if menu_buttom.is_pressed(mouse_pos, events):
                 game_over_bool = False
                 self.__init__()
@@ -126,6 +125,7 @@ class SGAME:
         statistics_game = Menu_button((800, 50), 200, 100, BLACK, WHITE, 'Statistics', 32, 2)
         reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         reset_play_time_game = Menu_button((800, 230), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
+        reset_number_of_attempts_game = Menu_button((800, 330), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
         intro = True
         about_game_bool = False
         setting_bool = False
@@ -144,6 +144,8 @@ class SGAME:
                 reset_kills(1)
             if reset_play_time_game.is_pressed(mouse_pos, events):
                 reset_play_time(1)
+            if reset_number_of_attempts_game.is_pressed(mouse_pos, events):
+                reset_number_of_attempts(1)
 
             if about_game_bool or setting_bool or statistics_bool:
                 if back.is_pressed(mouse_pos, events):
@@ -186,14 +188,17 @@ class SGAME:
                 self.screen.blit(back.image, back.rect)
                 self.screen.blit(reset_kills_game.image, reset_kills_game.rect)
                 self.screen.blit(reset_play_time_game.image, reset_play_time_game.rect)
+                self.screen.blit(reset_number_of_attempts_game.image, reset_number_of_attempts_game.rect)
                 self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), (440, 50))
+
                 self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 150))
                 self.screen.blit(self.font.render(str(get_kills(1)), True, 'WHITE'), (170, 150))
 
                 self.screen.blit(self.font.render("PLAY TIME:", True, 'WHITE'), (100, 250))
-                self.screen.blit(self.font.render(str(get_play_time(1)) + ' sec', True, 'WHITE'), (250, 250))
+                self.screen.blit(self.font.render(str(get_play_time(1)) + ' sec', True, 'WHITE'), (230, 250))
 
-
+                self.screen.blit(self.font.render("NUMBER OF ATTEMPTS:", True, 'WHITE'), (100, 350))
+                self.screen.blit(self.font.render(str(get_number_of_attempts(1)), True, 'WHITE'), (320, 350))
 
 
             else:
@@ -212,4 +217,3 @@ game.menu()
 
 pygame.quit()
 sys.exit()
-

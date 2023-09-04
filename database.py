@@ -6,11 +6,12 @@ cursor = db.cursor()
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users
-    (player_id integer,
+    (player_id INTEGER PRIMARY KEY,
     kills BIGINT,
-    play_time BIGINT
-    
+    play_time BIGINT,
+    number_of_attempts BIGINT
 )""")
+
 
 db.close()
 
@@ -23,7 +24,7 @@ def add_player(player_id):
     existing_player = cursor.fetchone()
 
     if existing_player is None:
-        cursor.execute("INSERT INTO users (player_id, kills, play_time) VALUES (?, 0, 0)", (player_id,))
+        cursor.execute("INSERT INTO users (player_id, kills, play_time, number_of_attempts) VALUES (?, 0, 0, 0)", (player_id,))
         db.commit()
 
     db.close()
@@ -75,7 +76,7 @@ def update_play_time(player_id, new_play_time):
     player_data = cursor.fetchone()
 
     if player_data:
-        current_play_time = player_data[2]  # Индекс 2 соответствует столбцу play_time
+        current_play_time = player_data[2]
         new_total_play_time = current_play_time + new_play_time
 
         cursor.execute("UPDATE users SET play_time=? WHERE player_id=?", (new_total_play_time, player_id))
@@ -108,5 +109,38 @@ def get_play_time(player_id):
     else:
         return 0
 
+# number of attempts
+
+def update_number_of_attempts(player_id):
+    db = sqlite3.connect("statistics.db")
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE users SET number_of_attempts=number_of_attempts+1 WHERE player_id=?", (player_id,))
+    db.commit()
+
+    db.close()
 
 
+def reset_number_of_attempts(player_id):
+    db = sqlite3.connect("statistics.db")
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE users SET number_of_attempts=0 WHERE player_id=?", (player_id,))
+    db.commit()
+
+    db.close()
+
+
+def get_number_of_attempts(player_id):
+    db = sqlite3.connect("statistics.db")
+    cursor = db.cursor()
+
+    cursor.execute("SELECT number_of_attempts FROM users WHERE player_id=?", (player_id,))
+    number_of_attempts = cursor.fetchone()
+
+    db.close()
+
+    if number_of_attempts:
+        return number_of_attempts[0]
+    else:
+        return 0

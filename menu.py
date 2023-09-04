@@ -29,5 +29,3 @@ class Menu_button:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
                 return True
         return False
-
-
