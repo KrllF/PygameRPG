@@ -80,7 +80,7 @@ class SGAME:
         pygame.display.update()
 
     def camera(self):
-        offset = pygame.math.Vector2(self.player.rect.centerx - 640, self.player.rect.centery - 360)
+        offset = pygame.math.Vector2(self.player.rect.centerx - SIZE[0] // 2, self.player.rect.centery - SIZE[1] // 2)
         floor_offset_rect = self.floor_rect.topleft - offset
         self.screen.blit(self.floor_surface, floor_offset_rect)
 
@@ -88,6 +88,9 @@ class SGAME:
                 self.all_sprites,
                 key=lambda sprite: sprite.rect.centery):
             offset_of_sprite = sprite.rect.topleft - offset
+            if type(sprite).__name__ == "robber":
+                sprite.health_bar(offset)
+
             self.screen.blit(sprite.image, offset_of_sprite)
 
     def draw(self):
@@ -104,8 +107,8 @@ class SGAME:
     def main(self):
         while self.running:
             self.events()
-            self.update()
             self.draw()
+            self.update()
             if self.game_over_bool:
                 self.running = False
         self.running = False

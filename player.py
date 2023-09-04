@@ -188,10 +188,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = self.rect.topleft[0]
             self.rect.y = self.rect.topleft[1]
 
-            if pygame.sprite.spritecollide(self, self.game.blocks, False) or pygame.sprite.spritecollide(self, self.game.unvisible, False):
+            if pygame.sprite.spritecollide(self, self.game.blocks, False) or pygame.sprite.spritecollide(self,
+                                                                                                         self.game.unvisible,
+                                                                                                         False):
                 self.rect.centerx = self.oldX
                 self.rect.centery = self.oldY
-
 
         if not hits2:
             self.oldX = self.rect.centerx
@@ -217,12 +218,15 @@ class Player(pygame.sprite.Sprite):
 
     def health_bar(self):
         pygame.draw.rect(self.game.screen, (255, 0, 0),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5,
+                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 20,
                           self.current_hp / (self.characteristics['health'] / self.health_bar_length), 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5,
+                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 20,
                           self.characteristics['health'] / (self.characteristics['health'] / self.health_bar_length),
                           5), True)
+
+    def draw_level(self):
+        self.game.screen.blit(self.game.font.render(str(self.level), False, 1), (SIZE[0] // 2 - 20, SIZE[1] // 2 - 35))
 
     def regeneration(self):
         if self.current_hp < self.characteristics['health']:
@@ -230,15 +234,11 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp > self.characteristics['health']:
             self.current_hp = self.characteristics['health']
 
-    def draw_level(self):
-        level_text = self.game.font.render(str(self.level), False, 1)
-        self.game.screen.blit(level_text, (self.rect.topleft[0] - 13, self.rect.topleft[1] - 23))
-
     def update(self):
-        self.draw_level()
         self.regeneration()
         self.update_level()
         self.ui.draw_ui()
+        self.draw_level()
         self.health_bar()
         self.player_death()
         self.input()

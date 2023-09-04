@@ -177,14 +177,13 @@ class robber(pygame.sprite.Sprite):
         if self.current_hp <= 0:
             self.kill()
 
-    def health_bar(self):
+    def health_bar(self, offset):
         pygame.draw.rect(self.game.screen, (255, 51, 153),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5, self.current_hp / self.health_ratio, 5))
+                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y, self.current_hp / self.health_ratio, 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5, self.maximum_hp / self.health_ratio, 5), True)
+                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y, self.maximum_hp / self.health_ratio, 5), True)
 
     def update(self):
-        self.health_bar()
 
         self.robber_death()
         self.robber_movements()

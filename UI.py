@@ -33,18 +33,18 @@ class User_Interface:
         # exp
 
         pygame.draw.rect(self.player.game.screen, 'yellow',
-                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10, self.player.exp // 2 / (
+                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 25, self.player.exp // 2 / (
                                  self.player.characteristics['health'] / self.player.health_bar_length), 5))
 
         pygame.draw.rect(self.player.game.screen, (255, 255, 255),
-                         (self.player.rect.topleft[0], self.player.rect.topleft[1] - 10,
+                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 25,
                           self.player.characteristics['health'] / (
                                   self.player.characteristics['health'] / self.player.health_bar_length),
                           5), True)
 
     def draw_kill_for_session(self):
         self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
-                                     (546, 50))
+                                     (SIZE[0]//2-10, 50))
 
     def create_buttons_upgrade(self):
         for i in range(3):
