@@ -1,3 +1,6 @@
+
+from working_with_csv_files import read_csv
+
 SIZE = (1080, 720)
 TILESIZE = 32
 FPS = 60
@@ -70,5 +73,12 @@ tilemap = [
     'B.b......RRRR.RRRR......B',
     'B...............R....B',
     'BBBBBBBBBBBBBBBBBBBBB',
+]
+
+layers_of_map = [
+    read_csv('../projectravil/csv_files/map_rpg_block.csv'),  # map border   index-0
+    read_csv('../projectravil/csv_files/map_rpg_trees.csv'),  # trees         index-1
+    read_csv('../projectravil/csv_files/map_rpg_robbers.csv'), # robbers        index-2
+    read_csv('../projectravil/csv_files/map_rpg_boss.csv') # bosses index-3
 ]
 

@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.height = TILESIZE
 
         self.image = self.game.character_spritesheet.get_sprite((0, 0), self.width, self.height)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect().inflate(-16, -10)
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -179,23 +179,27 @@ class Player(pygame.sprite.Sprite):
 
     def player_collide_with_blocks(self):
         hits = pygame.sprite.spritecollide(self, self.game.blocks, False)
-        if not hits:
+        hits2 = pygame.sprite.spritecollide(self, self.game.unvisible, False)
+        if not hits and not hits2:
             self.oldX = self.rect.centerx
             self.oldY = self.rect.centery
             self.rect.centerx += self.direction[0] * self.speed
             self.rect.centery += self.direction[1] * self.speed
-            if pygame.sprite.spritecollide(self, self.game.blocks, False):
+            self.rect.x = self.rect.topleft[0]
+            self.rect.y = self.rect.topleft[1]
+
+            if pygame.sprite.spritecollide(self, self.game.blocks, False) or pygame.sprite.spritecollide(self, self.game.unvisible, False):
                 self.rect.centerx = self.oldX
                 self.rect.centery = self.oldY
 
-    def player_collide_with_enemies(self):
-        hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
-        if not hits:
+
+        if not hits2:
             self.oldX = self.rect.centerx
             self.oldY = self.rect.centery
-        if hits:
-            self.rect.centerx = self.oldX
-            self.rect.centery = self.oldY
+
+            if pygame.sprite.spritecollide(self, self.game.unvisible, False):
+                self.rect.centerx = self.oldX
+                self.rect.centery = self.oldY
 
     def player_death(self):
         if self.current_hp <= 0:

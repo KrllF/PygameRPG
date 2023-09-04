@@ -32,18 +32,30 @@ class SGAME:
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
         self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)
 
+        # map
+
+        self.floor_surface = pygame.image.load('images/map_bg.png').convert()
+        self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
+
     def create_map(self):
-        for i, row in enumerate(tilemap):
-            for j, column in enumerate(row):
-                Ground(self, (j, i))
-                if column == "B":
-                    BLOCK(self, (j, i))
-                if column == "R":
-                    robber(self, (j, i))
-                if column == "b":
-                    Robber_boss(self, (j, i))
-                if column == "P":
-                    Player(self, (j, i))
+        for index, layer in enumerate(layers_of_map):
+            for row_index, row in enumerate(layer):
+                for col_index, col in enumerate(row):
+                    pos = (col_index, row_index)
+                    if col != '-1':
+                        if index == 0:
+                            # map border
+                            BLOCK(self, pos, 'block')
+                        elif index == 1:
+                            # trees
+                            BLOCK(self, pos, 'tree')
+
+                        elif index == 2:
+                            robber(self, pos)
+                            pass
+                        if index == 3:
+                            # bosses
+                            pass
 
     def new_game(self):
         self.playing = True
@@ -51,8 +63,11 @@ class SGAME:
         self.blocks = pygame.sprite.LayeredUpdates()
         self.enemies = pygame.sprite.LayeredUpdates()
         self.players = pygame.sprite.LayeredUpdates()
+        self.unvisible = pygame.sprite.LayeredUpdates()
 
         self.create_map()
+
+        self.player = Player(self, (20, 10))
 
     def events(self):
         for event in pygame.event.get():
@@ -64,9 +79,22 @@ class SGAME:
         self.all_sprites.update()
         pygame.display.update()
 
+    def camera(self):
+        offset = pygame.math.Vector2(self.player.rect.centerx - 640, self.player.rect.centery - 360)
+        floor_offset_rect = self.floor_rect.topleft - offset
+        self.screen.blit(self.floor_surface, floor_offset_rect)
+
+        for sprite in sorted(
+                self.all_sprites,
+                key=lambda sprite: sprite.rect.centery):
+            offset_of_sprite = sprite.rect.topleft - offset
+            self.screen.blit(sprite.image, offset_of_sprite)
+
     def draw(self):
         self.screen.fill(BLACK)
-        self.all_sprites.draw(self.screen)
+        # для карты временно
+
+        self.camera()
         self.clock.tick(FPS)
 
     def check_main(self):

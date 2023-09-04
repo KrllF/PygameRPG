@@ -16,10 +16,15 @@ class Spritesheet:
 
 class BLOCK(pygame.sprite.Sprite):
 
-    def __init__(self, game, pos):
+    def __init__(self, game, pos, type_sprite):
         self.game = game
         self._layer = BLOCK_LAYER
-        self.groups = self.game.all_sprites, self.game.blocks
+        self.type_sprite = type_sprite
+
+        if self.type_sprite == 'block':
+            self.groups = self.game.unvisible
+        if self.type_sprite == 'tree':
+            self.groups = self.game.all_sprites, self.game.blocks
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.x = pos[0] * TILESIZE
@@ -27,7 +32,7 @@ class BLOCK(pygame.sprite.Sprite):
         self.width = TILESIZE
         self.height = TILESIZE
 
-        self.image = self.game.terrain_spritesheet.get_sprite((960, 448), self.width, self.height)
+        self.image = pygame.image.load('images/img.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
