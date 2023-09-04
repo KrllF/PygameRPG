@@ -23,7 +23,8 @@ class SGAME:
         self.screen = pygame.display.set_mode(SIZE)
         self.clock = pygame.time.Clock()
         self.running = True
-
+        self.start_game_time = None
+        self.end_game_time = None
         self.character_spritesheet = Spritesheet("imagestest/character.png")
         self.terrain_spritesheet = Spritesheet("imagestest/terrain.png")
         self.enemy_spritesheet = Spritesheet("imagestest/enemy.png")
@@ -104,13 +105,15 @@ class SGAME:
             self.running = False
 
     def main(self):
+        self.start_game_time = pygame.time.get_ticks()
         while self.running:
             self.events()
             self.draw()
             self.update()
             if self.game_over_bool:
                 self.running = False
-
+        self.end_game_time = pygame.time.get_ticks()
+        update_play_time(1, self.end_game_time - self.start_game_time)
         self.running = False
 
     def game_over(self):
@@ -152,7 +155,7 @@ class SGAME:
             pygame.display.update()
 
     def menu(self):
-        local_game = Menu_button((415, 50), 250, 100, BLACK, WHITE, 'Local play', 32, 2)
+        local_game = Menu_button((415, 50), 250, 100, BLACK, WHITE, 'Play', 32, 2)
         about_game = Menu_button((415, 200), 250, 100, BLACK, WHITE, 'About game', 32, 2)
         setting = Menu_button((415, 350), 250, 100, BLACK, WHITE, 'Setting', 32, 2)
         exit_game = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)

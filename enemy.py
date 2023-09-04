@@ -1,7 +1,6 @@
 import pygame
 import math
 import random
-
 from config import *
 from weapon import Weapon_for_enemyis
 
@@ -160,6 +159,12 @@ class robber(pygame.sprite.Sprite):
             self.cooldown_check = True
             self.direction_vector = [0, 0]
 
+    def movement_not_angry(self):
+        for player in self.game.players:
+            while not self.field_of_vision(player):
+                self.view[0] = random.randint(-1, 1)
+                self.view[1] = random.randint(-1, 1)
+
     def robber_collide(self):
         hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
         for collided_sprite in hits:
@@ -179,9 +184,11 @@ class robber(pygame.sprite.Sprite):
 
     def health_bar(self, offset):
         pygame.draw.rect(self.game.screen, (255, 51, 153),
-                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y, self.current_hp / self.health_ratio, 5))
+                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y,
+                          self.current_hp / self.health_ratio, 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
-                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y, self.maximum_hp / self.health_ratio, 5), True)
+                         (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y,
+                          self.maximum_hp / self.health_ratio, 5), True)
 
     def update(self):
 

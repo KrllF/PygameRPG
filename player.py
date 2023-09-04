@@ -204,7 +204,6 @@ class Player(pygame.sprite.Sprite):
 
     def player_death(self):
         if self.current_hp <= 0:
-            update_play_time(1, pygame.time.get_ticks())
             self.life_time = pygame.time.get_ticks() // 1000
             self.game.game_over_bool = True
             self.kill()

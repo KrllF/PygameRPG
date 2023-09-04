@@ -74,7 +74,7 @@ def update_play_time(player_id, new_play_time):
 
     cursor.execute("SELECT * FROM users WHERE player_id=?", (player_id,))
     player_data = cursor.fetchone()
-
+    new_play_time //= 1000
     if player_data:
         current_play_time = player_data[2]
         new_total_play_time = current_play_time + new_play_time

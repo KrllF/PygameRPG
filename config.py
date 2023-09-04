@@ -58,22 +58,6 @@ ABOUT_GAME = "Genre: Battle royale. From 2 to 4 players. The goal: to survive la
 ABOUT_GAME1 = "earns experience points, which go to improve characteristics, and money that goes to buy and improve  "
 ABOUT_GAME2 = "equipment. There is a boss on the map (like Roshan from Dota), killing which you get a bonus."
 
-tilemap = [
-    'BBBBBBBBBBBBBBBBBBBBB',
-    'B...................B',
-    'B..R............BB..B',
-    'B...................B',
-    'B.............b.....B',
-    'B...........P.......B',
-    'B...................B',
-    'B.....BBB.......R...B',
-    'B.......B......B....B',
-    'B.......B......BBB..B',
-    'B...................B',
-    'B.b......RRRR.RRRR......B',
-    'B...............R....B',
-    'BBBBBBBBBBBBBBBBBBBBB',
-]
 
 layers_of_map = [
     read_csv('../projectravil/csv_files/map_rpg_block.csv'),  # map border   index-0
