@@ -29,3 +29,33 @@ class Menu_button:
             if event.type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(event.pos):
                 return True
         return False
+
+
+class Slider:
+    def __init__(self, pos, size, initial_val, min, max):
+        self.pos = pos
+        self.size = size
+
+        self.left_pos = self.pos[0] - (size[0] // 2)
+        self.right_pos = self.pos[0] + (size[0] // 2)
+        self.top_pos = self.pos[1] - (size[1] // 2)
+
+        self.min = min
+        self.max = max
+        self.initial_val = (self.right_pos - self.left_pos) * initial_val
+
+        self.container_rect = pygame.Rect(self.left_pos, self.top_pos, self.size[0], self.size[1])
+        self.button_rect = pygame.Rect(self.left_pos + self.initial_val - 5, self.top_pos, 10,
+                                       self.size[1])
+    def move_slider(self, mouse_pos):
+        self.button_rect.centerx = mouse_pos[0]
+    def render(self, game):
+        pygame.draw.rect(game.screen, "darkgray", self.container_rect)
+        pygame.draw.rect(game.screen, "blue", self.button_rect)
+
+    def get_value(self):
+        val_range = self.right_pos - self.left_pos
+        button_val = self.button_rect.centerx - self.left_pos
+
+        return (button_val/val_range) * (self.max - self.min) + self.min
+

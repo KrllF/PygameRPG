@@ -20,7 +20,7 @@ class SGAME:
     def __init__(self):
         pygame.init()
         self.game_over_bool = False
-
+        self.FPS = FPS
         self.screen = pygame.display.set_mode(SIZE)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -98,7 +98,7 @@ class SGAME:
         # для карты временно
 
         self.camera()
-        self.clock.tick(FPS)
+        self.clock.tick(self.FPS)
 
     def check_main(self):
         if self.players.empty():
@@ -157,6 +157,8 @@ class SGAME:
         reset_kills_game = Menu_button((800, 130), 100, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         reset_play_time_game = Menu_button((800, 230), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
         reset_number_of_attempts_game = Menu_button((800, 330), 100, 50, BLACK, WHITE, 'Reset time', 32, 2)
+        sliderFPS = Slider((SIZE[0] // 2, SIZE[1] // 2 - 100), (200, 50), 0.5, 30, 120)
+
         intro = True
         about_game_bool = False
         setting_bool = False
@@ -183,6 +185,7 @@ class SGAME:
                     about_game_bool = False
                     setting_bool = False
                     statistics_bool = False
+
             else:
                 if local_game.is_pressed(mouse_pos, events):
                     intro = False
@@ -214,6 +217,17 @@ class SGAME:
                 self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), (10, 50))
 
             elif setting_bool:
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_press = pygame.mouse.get_pressed()
+                if sliderFPS.container_rect.collidepoint(mouse_pos) and mouse_press[0]:
+                    sliderFPS.move_slider(mouse_pos)
+
+                self.screen.blit(self.font1.render("SETTING", True, 'WHITE'), (470, 50))
+                sliderFPS.render(self)
+                self.FPS = sliderFPS.get_value()
+                self.screen.blit(self.font.render("FPS:", True, 'WHITE'), (300, SIZE[1]//2-115))
+                self.screen.blit(self.font.render(str(int(sliderFPS.get_value())), True, 'WHITE'), (SIZE[0]//2-8, SIZE[1]//2-60))
+
                 self.screen.blit(back.image, back.rect)
             elif statistics_bool:
                 self.screen.blit(back.image, back.rect)
@@ -239,7 +253,7 @@ class SGAME:
                 self.screen.blit(statistics_game.image, statistics_game.rect)
                 self.screen.blit(exit_game.image, exit_game.rect)
 
-            self.clock.tick(FPS)
+            self.clock.tick(self.FPS)
             pygame.display.update()
 
 
