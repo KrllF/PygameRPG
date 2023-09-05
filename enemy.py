@@ -16,7 +16,17 @@ class robber(pygame.sprite.Sprite):
         self.maximum_hp = robber_hp
         self.current_hp = robber_hp
         self.health_bar_length = 32
-        self.health_ratio = self.maximum_hp / self.health_bar_length
+
+        self.speed = random.uniform(1, 2)
+
+        self.attack = pygame.sprite.LayeredUpdates()
+        self.can_attack = False
+        self.damage = 20
+        self.attack_time = 0
+
+        self.characteristics = {'health': self.maximum_hp, 'speed': self.speed, 'damage': self.damage }
+
+        self.health_ratio = self.characteristics['health'] / self.health_bar_length
 
         self.groups = self.game.all_sprites, self.game.enemies
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -34,17 +44,10 @@ class robber(pygame.sprite.Sprite):
         self.enemy_blinding = False
         self.blinding_time = -10000
 
-        self.attack = pygame.sprite.LayeredUpdates()
-        self.can_attack = False
-        self.damage = 20
-        self.attack_time = 0
 
         self.direction = [0, 0]
         self.view = [0, 0]
         self.direction_vector = [0, 0]
-
-
-        self.speed = random.uniform(1, 2)
 
     def robber_animation(self):
         down_animations = [self.game.enemy_spritesheet.get_sprite((3, 2), self.width, self.height),
@@ -148,8 +151,8 @@ class robber(pygame.sprite.Sprite):
                     self.direction_vector[0] = round(self.direction_vector[0], 1)
                     self.direction_vector[1] = round(self.direction_vector[1], 1)
                 if dist > TILESIZE:
-                    self.rect.centerx += self.direction_vector[0] * self.speed
-                    self.rect.centery += self.direction_vector[1] * self.speed
+                    self.rect.centerx += self.direction_vector[0] * self.characteristics['speed']
+                    self.rect.centery += self.direction_vector[1] * self.characteristics['speed']
                 else:
                     if self.attack_checker():
                         self.attack_time = pygame.time.get_ticks()
@@ -186,13 +189,20 @@ class robber(pygame.sprite.Sprite):
     def health_bar(self, offset):
         pygame.draw.rect(self.game.screen, (255, 51, 153),
                          (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y,
-                          self.current_hp / self.health_ratio, 5))
+                          self.current_hp / (self.characteristics['health'] / self.health_bar_length), 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
                          (self.rect.topleft[0] - offset.x, self.rect.topleft[1] - 5 - offset.y,
-                          self.maximum_hp / self.health_ratio, 5), True)
+                          self.characteristics['health'] / (self.characteristics['health'] / self.health_bar_length),
+                          5), True)
+
+    def regeneration(self):
+        if self.current_hp < self.characteristics['health']:
+            self.current_hp += 0.001 * self.characteristics['health']
+        if self.current_hp > self.characteristics['health']:
+            self.current_hp = self.characteristics['health']
 
     def update(self):
-
+        self.regeneration()
         self.robber_death()
         self.robber_movements()
         self.robber_animation()
@@ -374,11 +384,17 @@ class Robber_boss(pygame.sprite.Sprite):
         pygame.draw.rect(self.game.screen, (255, 51, 153),
                          (self.rect.topleft[0], self.rect.topleft[1] - 5, self.current_hp / self.health_ratio, 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
-                         (self.rect.topleft[0], self.rect.topleft[1] - 5, self.maximum_hp / self.health_ratio, 5), True)
+                         (self.rect.topleft[0], self.rect.topleft[1] - 5, self.characteristic['health'] / self.health_ratio, 5), True)
+
+    def regeneration(self):
+        if self.current_hp < self.characteristics['health']:
+            self.current_hp += 0.001 * self.characteristics['health']
+        if self.current_hp > self.characteristics['health']:
+            self.current_hp = self.characteristics['health']
 
     def update(self):
         self.health_bar()
-
+        self.regeneration()
         self.robber_boss_death()
         self.robber_boss_movements()
 #       self.robber_animation()

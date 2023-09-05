@@ -183,8 +183,8 @@ class Player(pygame.sprite.Sprite):
         if not hits and not hits2:
             self.oldX = self.rect.centerx
             self.oldY = self.rect.centery
-            self.rect.centerx += self.direction[0] * self.speed
-            self.rect.centery += self.direction[1] * self.speed
+            self.rect.centerx += self.direction[0] * self.characteristics['speed']
+            self.rect.centery += self.direction[1] * self.characteristics['speed']
             self.rect.x = self.rect.topleft[0]
             self.rect.y = self.rect.topleft[1]
 

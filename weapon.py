@@ -1,6 +1,7 @@
 import pygame
 from config import *
 from database import *
+from random import randint
 
 
 class Weapon_for_players(pygame.sprite.Sprite):
@@ -50,13 +51,13 @@ class Weapon_for_players(pygame.sprite.Sprite):
             self.image = self.animation_frames[direction]
 
     def update_sword_position(self):
-        if self.player.view == [0, -1]:  # Вверх
+        if self.player.view == [0, -1]:
             self.rect.midbottom = self.player.rect.midtop
-        elif self.player.view == [0, 1]:  # Вниз
+        elif self.player.view == [0, 1]:
             self.rect.midtop = self.player.rect.midbottom
-        elif self.player.view == [1, 0]:  # Вправо
+        elif self.player.view == [1, 0]:
             self.rect.midleft = self.player.rect.midright
-        elif self.player.view == [-1, 0]:  # Влево
+        elif self.player.view == [-1, 0]:
             self.rect.midright = self.player.rect.midleft
 
     def collide_with_enemy(self):
@@ -64,19 +65,29 @@ class Weapon_for_players(pygame.sprite.Sprite):
         for i, enemy in enumerate(hits):
             if enemy not in self.enemies_hit:
                 if type(enemy).__name__ == "robber":
-                    if enemy.current_hp - self.player.damage <= 0:
-                        self.player.exp += 50
+                    if enemy.current_hp - self.player.characteristics['damage'] <= 0:
+                        enemy.current_hp -= self.player.characteristics['damage']
+                        self.player.exp += randint(80, 100)
                         self.player.kill_for_session += 1
+                        for enemy in self.game.enemies:
+                            enemy.characteristics['damage'] *= 1.10
+                            enemy.characteristics['health'] *= 1.10
+                            enemy.characteristics['speed'] *= 1.05
+                    else:
+                        enemy.current_hp -= self.player.characteristics['damage']
 
                 if type(enemy).__name__ == "Robber_boss":
-                    if enemy.current_hp - self.player.damage <= 0:
+                    if enemy.current_hp - self.player.characteristics['damage'] <= 0:
                         self.player.exp += 200
                         self.player.kill_for_session += 1
+                        for enemy in self.game.enemies:
+                            enemy.characteristics['damage'] *= 1.05
+                            enemy.characteristics['health'] *= 1.10
+                            enemy.characteristics['speed'] *= 1.05
 
                 enemy.enemy_blinding = True
                 enemy.blinding_time = pygame.time.get_ticks()
-                enemy.current_hp -= self.player.characteristics['damage']
-                self.enemies_hit.add(enemy)
+            self.enemies_hit.add(enemy)
 
     def update(self):
         self.direction()
@@ -157,11 +168,11 @@ class Weapon_for_enemyis(Weapon_for_players):
         hits = pygame.sprite.spritecollide(self, self.game.players, False)
         for i, player in enumerate(hits):
             if player not in self.players_hit:
-                if player.current_hp - self.robber.damage <= 0:
+                if player.current_hp - self.robber.characteristics['damage'] <= 0:
                     player.player_death()
                 player.enemy_blinding = True
                 player.blinding_time = pygame.time.get_ticks()
-                player.current_hp -= self.robber.damage
+                player.current_hp -= self.robber.characteristics['damage']
                 self.players_hit.add(player)
 
     def update(self):
