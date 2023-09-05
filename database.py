@@ -33,11 +33,13 @@ def add_player(player_id):
 
 
 # kill
-def update_kills(player_id):
+def update_kills(player_id, new_kills):
     db = sqlite3.connect("statistics.db")
     cursor = db.cursor()
 
-    cursor.execute("UPDATE users SET kills=kills+1 WHERE player_id=?", (player_id,))
+    kills_new = get_kills(player_id)
+    kills_new +=new_kills
+    cursor.execute("UPDATE users SET kills=? WHERE player_id=?", (kills_new, player_id))
     db.commit()
 
     db.close()

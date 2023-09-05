@@ -67,12 +67,12 @@ class Weapon_for_players(pygame.sprite.Sprite):
                     if enemy.current_hp - self.player.damage <= 0:
                         self.player.exp += 50
                         self.player.kill_for_session += 1
-                        update_kills(1)
+
                 if type(enemy).__name__ == "Robber_boss":
                     if enemy.current_hp - self.player.damage <= 0:
                         self.player.exp += 200
                         self.player.kill_for_session += 1
-                        update_kills(1)
+
                 enemy.enemy_blinding = True
                 enemy.blinding_time = pygame.time.get_ticks()
                 enemy.current_hp -= self.player.characteristics['damage']
