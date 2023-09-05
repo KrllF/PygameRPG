@@ -36,6 +36,8 @@ class SGAME:
 
         self.floor_surface = pygame.image.load('images/map_bg.png').convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
+        self.floor_fix = pygame.image.load('images/mapс.png').convert()
+        self.floor_fix_rect = self.floor_fix.get_rect(topleft=(-500, -500))
 
     def create_map(self):
         for index, layer in enumerate(layers_of_map):
@@ -69,6 +71,7 @@ class SGAME:
 
         self.player = Player(self, (20, 10))
 
+
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -82,6 +85,8 @@ class SGAME:
     def camera(self):
         offset = pygame.math.Vector2(self.player.rect.centerx - SIZE[0] // 2, self.player.rect.centery - SIZE[1] // 2)
         floor_offset_rect = self.floor_rect.topleft - offset
+        floor_fix_offset_rect = self.floor_fix_rect.topleft - offset
+        self.screen.blit(self.floor_fix, floor_fix_offset_rect)
         self.screen.blit(self.floor_surface, floor_offset_rect)
 
         for sprite in sorted(
@@ -154,7 +159,6 @@ class SGAME:
             self.screen.blit(restart_buttom.image, restart_buttom.rect)
             self.screen.blit(menu_buttom.image, menu_buttom.rect)
             self.screen.blit(self.font1.render("YOU DIED!!!", True, 'RED'), (460, 50))
-
 
             self.clock.tick(60)
             pygame.display.update()

@@ -248,3 +248,49 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.player_collide_with_blocks()
         self.player_animation()
+
+
+class second_player(Player):
+    pass
+
+    #def input(self):
+        #keys = pygame.key.get_pressed()
+        #mouse_pressed = pygame.mouse.get_pressed()
+
+        #if pygame.time.get_ticks() - self.blinding_time > blindtime:
+            #self.player_blinding = False
+           # if keys[pygame.K_UP]:
+          #      self.direction[1] = -1
+         #       self.view[0] = 0
+        #        self.view[1] = -1
+       #     elif keys[pygame.K_DOWN]:
+      #          self.direction[1] = 1
+     #           self.view[0] = 0
+    #            self.view[1] = 1
+   #         else:
+  #              self.direction[1] = 0
+#
+ #           if keys[pygame.K_RIGHT]:
+         #       self.direction[0] = 1
+        #        self.view[0] = 1
+       #         self.view[1] = 0
+      #      elif keys[pygame.K_LEFT]:
+     #           self.direction[0] = -1
+    #            self.view[0] = -1
+   #             self.view[1] = 0
+  #          else:
+ #               self.direction[0] = 0
+#
+     #       if keys[pygame.K_l]:
+    #            self.upgrade_menu_open = True
+   #             self.ui.draw_upgrade_menu()
+  #              if mouse_pressed[0]:
+ #                   self.ui.check_click(pygame.mouse.get_pos())
+#
+     #       if keys[pygame.K_k]:
+    #            if self.attack_checker():
+   #                 self.attack_time = pygame.time.get_ticks()
+   #                 Weapon_for_players(self.game, self, (self.x, self.y))
+  #                  self.can_attack = False
+ #       else:
+#            self.direction = [0, 0]

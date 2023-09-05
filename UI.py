@@ -44,7 +44,7 @@ class User_Interface:
 
     def draw_kill_for_session(self):
         self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
-                                     (SIZE[0]//2-10, 50))
+                                     (SIZE[0] // 2 - 10, 50))
 
     def create_buttons_upgrade(self):
         for i in range(3):
@@ -62,7 +62,6 @@ class User_Interface:
 
     def timer_upgrade(self):
         pass
-
 
     def upgrade_characteristic(self, characteristic_name):
         if self.player.leveling_points > 0:
@@ -102,6 +101,9 @@ class User_Interface:
         self.player.game.screen.blit(self.damage_image, self.damage_image_rect)
         self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['damage']), True, 'BLACK'),
                                      (746, self.health_image_rect.y + self.health_image_rect.height + 45))
+
+        self.player.game.screen.blit(self.font.render("leveling points: " + str(self.player.leveling_points), True, 'white'),
+                                     (SIZE[0] // 2-50, 100))
 
         self.buttons_upgrade.update()
 
