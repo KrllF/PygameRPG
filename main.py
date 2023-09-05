@@ -25,9 +25,9 @@ class SGAME:
         self.running = True
         self.start_game_time = None
         self.end_game_time = None
-        self.character_spritesheet = Spritesheet("imagestest/character.png")
-        self.terrain_spritesheet = Spritesheet("imagestest/terrain.png")
-        self.enemy_spritesheet = Spritesheet("imagestest/enemy.png")
+        self.character_spritesheet = Spritesheet("images/character.png")
+        self.terrain_spritesheet = Spritesheet("images/terrain.png")
+        self.enemy_spritesheet = Spritesheet("images/enemy.png")
 
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
         self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)

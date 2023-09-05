@@ -43,6 +43,7 @@ class robber(pygame.sprite.Sprite):
         self.view = [0, 0]
         self.direction_vector = [0, 0]
 
+
         self.speed = random.uniform(1, 2)
 
     def robber_animation(self):

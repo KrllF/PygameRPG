@@ -51,7 +51,7 @@ class Slider:
         self.button_rect.centerx = mouse_pos[0]
     def render(self, game):
         pygame.draw.rect(game.screen, "darkgray", self.container_rect)
-        pygame.draw.rect(game.screen, "blue", self.button_rect)
+        pygame.draw.rect(game.screen, "red", self.button_rect)
 
     def get_value(self):
         val_range = self.right_pos - self.left_pos
