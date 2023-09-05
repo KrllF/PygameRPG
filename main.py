@@ -53,6 +53,7 @@ class SGAME:
                             BLOCK(self, pos, 'tree')
 
                         elif index == 2:
+
                             robber(self, pos)
                             pass
                         if index == 3:
@@ -70,7 +71,6 @@ class SGAME:
         self.create_map()
 
         self.player = Player(self, (20, 10))
-
 
     def events(self):
         for event in pygame.event.get():
@@ -109,10 +109,24 @@ class SGAME:
         if self.players.empty():
             self.running = False
 
+    def new_wave(self):
+        if len(self.enemies) == 0:
+            for index, layer in enumerate(layers_of_map):
+                for row_index, row in enumerate(layer):
+                    for col_index, col in enumerate(row):
+                        pos = (col_index, row_index)
+                        if col != '-1':
+
+                            if index == 2:
+                                Robber = robber(self, pos)
+                                Robber.characteristics['health'] *= pow(1.05, self.player.kill_for_session)
+                                Robber.characteristics['damage'] *= pow(1.05, self.player.kill_for_session)
+                                Robber.characteristics['speed'] *= pow(1.05, self.player.kill_for_session)
+
     def main(self):
         self.start_game_time = pygame.time.get_ticks()
         while self.running:
-
+            self.new_wave()
             self.events()
             self.draw()
             self.update()
@@ -196,6 +210,9 @@ class SGAME:
                 reset_play_time(1)
             if reset_number_of_attempts_game.is_pressed(mouse_pos, events):
                 reset_number_of_attempts(1)
+
+            if reset_max_kills_game.is_pressed(mouse_pos, events):
+                reset_max_kills(1)
 
             if about_game_bool or setting_bool or statistics_bool:
                 if back.is_pressed(mouse_pos, events):

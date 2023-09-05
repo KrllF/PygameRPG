@@ -46,6 +46,10 @@ class User_Interface:
         self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
                                      (SIZE[0] // 2 - 10, 50))
 
+    def draw_number_of_enemy(self):
+        self.player.game.screen.blit(self.font.render("ENEMYIS: " + str(len(self.player.game.enemies)), True, 'WHITE'),
+                                     (SIZE[0] // 2 - 10, 80))
+
     def create_buttons_upgrade(self):
         for i in range(3):
             self.buttons_upgrade.add(Button_and_name((self.health_image_rect.x + i * 200,
@@ -54,7 +58,7 @@ class User_Interface:
 
     def check_click(self, mouse_pos):
         for button in self.buttons_upgrade:
-            if button.rect.collidepoint(mouse_pos):
+            if button.rect.collidepoint(mouse_pos) and not button.click:
                 self.upgrade_characteristic(button.characteristic_name)
                 button.click_time = pygame.time.get_ticks()
                 button.click = True
@@ -66,7 +70,7 @@ class User_Interface:
     def upgrade_characteristic(self, characteristic_name):
         if self.player.leveling_points > 0:
             self.player.leveling_points -= 1
-            self.player.characteristics[characteristic_name] *= 1.10
+            self.player.characteristics[characteristic_name] *= 1.20
             self.player.characteristics_level[characteristic_name] += 1
 
     def draw_upgrade_menu(self):
@@ -110,6 +114,7 @@ class User_Interface:
     def draw_ui(self):
         self.draw_bars_of_characteristics()
         self.draw_kill_for_session()
+        self.draw_number_of_enemy()
 
 
 class Button_and_name(pygame.sprite.Sprite):
@@ -132,4 +137,5 @@ class Button_and_name(pygame.sprite.Sprite):
             self.click = not self.click
 
     def update(self):
+
         self.cooldown()
