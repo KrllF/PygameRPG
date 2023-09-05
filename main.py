@@ -132,10 +132,11 @@ class SGAME:
             self.update()
             if self.game_over_bool:
                 self.running = False
-        self.end_game_time = pygame.time.get_ticks()
-        update_kills(1, self.player.kill_for_session)
-        update_play_time(1, self.end_game_time - self.start_game_time)
-        update_max_kills(1, self.player.kill_for_session)
+                self.end_game_time = pygame.time.get_ticks()
+                update_kills(1, self.player.kill_for_session)
+                update_play_time(1, self.end_game_time - self.start_game_time)
+                update_max_kills(1, self.player.kill_for_session)
+
         self.running = False
 
     def game_over(self):
