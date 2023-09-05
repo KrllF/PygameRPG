@@ -17,11 +17,11 @@ class User_Interface:
 
         # upgrade menu
         self.health_image1 = pygame.transform.scale(
-            pygame.image.load('images/health.jpg').convert_alpha(), (200, 250))
-        self.speed_image = pygame.transform.scale(pygame.image.load('images/speed.png').convert_alpha(),
+            pygame.image.load('images/skill_upgrade/health.jpg').convert_alpha(), (200, 250))
+        self.speed_image = pygame.transform.scale(pygame.image.load('images/skill_upgrade/speed.png').convert_alpha(),
                                                   (200, 250))
         self.damage_image = pygame.transform.scale(
-            pygame.image.load('images/damage.png').convert_alpha(), (200, 250))
+            pygame.image.load('images/skill_upgrade/damage.png').convert_alpha(), (200, 250))
 
         self.health_image_rect = self.health_image1.get_rect(topleft=(250, 200))
         self.damage_image_rect = self.damage_image.get_rect(topleft=(650, 200))
@@ -44,11 +44,11 @@ class User_Interface:
 
     def draw_kill_for_session(self):
         self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
-                                     (SIZE[0] // 2 - 10, 50))
+                                     (SIZE[0] // 2 - 20, 50))
 
     def draw_number_of_enemy(self):
         self.player.game.screen.blit(self.font.render("ENEMYIS: " + str(len(self.player.game.enemies)), True, 'WHITE'),
-                                     (SIZE[0] // 2 - 10, 80))
+                                     (SIZE[0] // 2 - 20, 80))
 
     def create_buttons_upgrade(self):
         for i in range(3):
@@ -120,7 +120,8 @@ class User_Interface:
 class Button_and_name(pygame.sprite.Sprite):
     def __init__(self, pos, characteristic_name):
         super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load('images/button_for_upgrade.png').convert_alpha(),
+        self.image = pygame.transform.scale(pygame.image.load(
+            'images/skill_upgrade/button_for_upgrade.png').convert_alpha(),
                                             (200, 150))
         self.rect = self.image.get_rect(topleft=pos)
         self.characteristic_name = characteristic_name

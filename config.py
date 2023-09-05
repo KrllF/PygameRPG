@@ -38,10 +38,10 @@ robber_hp = 50
 robber_xp = 1
 robber_damage = 20
 
-robber_boss_hp = 300
+robber_boss_hp = 100
 robber_boss_xp = 1
 robber_boss_damage = 35
-robber_boss_speed = 1
+robber_boss_speed = 2
 
 enemy_weapon_cooldown = 1500
 blindtime_robber = 600

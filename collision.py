@@ -4,13 +4,13 @@ from config import *
 
 
 class Spritesheet:
-    def __init__(self, file):
+    def __init__(self, file, color):
         self.sheet = pygame.image.load(file).convert()
-
+        self.color = color
     def get_sprite(self, pos, width, height):
         sprite = pygame.Surface([width, height])
         sprite.blit(self.sheet, (0, 0), (pos[0], pos[1], width, height))
-        sprite.set_colorkey(BLACK)
+        sprite.set_colorkey(self.color)
         return sprite
 
 
@@ -32,7 +32,7 @@ class BLOCK(pygame.sprite.Sprite):
         self.width = TILESIZE
         self.height = TILESIZE
 
-        self.image = pygame.image.load('images/img.png').convert_alpha()
+        self.image = pygame.image.load('images/map/img.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y

@@ -25,18 +25,17 @@ class SGAME:
         self.running = True
         self.start_game_time = None
         self.end_game_time = None
-        self.character_spritesheet = Spritesheet("images/character.png")
-        self.terrain_spritesheet = Spritesheet("images/terrain.png")
-        self.enemy_spritesheet = Spritesheet("images/enemy.png")
-
+        self.character_spritesheet = Spritesheet("images/character.png", "BLACK")
+        self.enemy_spritesheet = Spritesheet("images/enemy.png", "BLACK")
+        self.enemy_boss_spritesheet = Spritesheet("images/enemy_boss.png", "WHITE")
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
         self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)
 
         # map
 
-        self.floor_surface = pygame.image.load('images/map_bg.png').convert()
+        self.floor_surface = pygame.image.load('images/map/map_bg.png').convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
-        self.floor_fix = pygame.image.load('images/mapс.png').convert()
+        self.floor_fix = pygame.image.load('images/map/mapс.png').convert()
         self.floor_fix_rect = self.floor_fix.get_rect(topleft=(-500, -500))
 
     def create_map(self):
@@ -53,11 +52,10 @@ class SGAME:
                             BLOCK(self, pos, 'tree')
 
                         elif index == 2:
-
                             robber(self, pos)
-                            pass
+
                         if index == 3:
-                            # bosses
+                            Robber_boss(self, pos)
                             pass
 
     def new_game(self):
@@ -94,6 +92,8 @@ class SGAME:
                 key=lambda sprite: sprite.rect.centery):
             offset_of_sprite = sprite.rect.topleft - offset
             if type(sprite).__name__ == "robber":
+                sprite.health_bar(offset)
+            if type(sprite).__name__ == "Robber_boss":
                 sprite.health_bar(offset)
 
             self.screen.blit(sprite.image, offset_of_sprite)
@@ -152,7 +152,6 @@ class SGAME:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
             if restart_buttom.is_pressed(mouse_pos, events):
                 update_number_of_attempts(1)
 

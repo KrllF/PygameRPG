@@ -6,10 +6,10 @@ from random import randint
 
 class Weapon_for_players(pygame.sprite.Sprite):
     def __init__(self, game, player, pos):
-        self.sword_up_images = [pygame.image.load("images/sword_up.png")]
-        self.sword_down_images = [pygame.image.load("images/sword_down.png")]
-        self.sword_left_images = [pygame.image.load("images/sword_left.png")]
-        self.sword_right_images = [pygame.image.load("images/sword_right.png")]
+        self.sword_up_images = [pygame.image.load("images/sword/sword_up.png")]
+        self.sword_down_images = [pygame.image.load("images/sword/sword_down.png")]
+        self.sword_left_images = [pygame.image.load("images/sword/sword_left.png")]
+        self.sword_right_images = [pygame.image.load("images/sword/sword_right.png")]
 
         self.game = game
         self.player = player
@@ -21,10 +21,10 @@ class Weapon_for_players(pygame.sprite.Sprite):
         self.x = pos[0]
         self.y = pos[1]
 
-        self.image_up = pygame.image.load("images/sword_up.png")
-        self.image_down = pygame.image.load("images/sword_down.png")
-        self.image_left = pygame.image.load("images/sword_left.png")
-        self.image_right = pygame.image.load("images/sword_right.png")
+        self.image_up = pygame.image.load("images/sword/sword_up.png")
+        self.image_down = pygame.image.load("images/sword/sword_down.png")
+        self.image_left = pygame.image.load("images/sword/sword_left.png")
+        self.image_right = pygame.image.load("images/sword/sword_right.png")
         self.image = self.image_down
         self.rect = self.image.get_rect(center=player.rect.center)
 
@@ -71,20 +71,33 @@ class Weapon_for_players(pygame.sprite.Sprite):
                         self.player.exp += randint(80, 100)
                         self.player.kill_for_session += 1
                         for enemy in self.game.enemies:
-                            enemy.characteristics['damage'] *= 1.10
-                            enemy.characteristics['health'] *= 1.10
-                            enemy.characteristics['speed'] *= 1.05
+                            if type(enemy).__name__ == "robber":
+                                enemy.characteristics['damage'] *= 1.10
+                                enemy.characteristics['health'] *= 1.10
+                                enemy.characteristics['speed'] *= 1.05
+                            else:
+                                enemy.characteristics['damage'] *= 1.05
+                                enemy.characteristics['health'] *= 1.05
+                                enemy.characteristics['speed'] *= 1.01
                     else:
                         enemy.current_hp -= self.player.characteristics['damage']
 
                 if type(enemy).__name__ == "Robber_boss":
                     if enemy.current_hp - self.player.characteristics['damage'] <= 0:
-                        self.player.exp += 200
+                        enemy.current_hp -= self.player.characteristics['damage']
+                        self.player.exp += 300
                         self.player.kill_for_session += 1
                         for enemy in self.game.enemies:
-                            enemy.characteristics['damage'] *= 1.05
-                            enemy.characteristics['health'] *= 1.10
-                            enemy.characteristics['speed'] *= 1.05
+                            if type(enemy).__name__ == "robber":
+                                enemy.characteristics['damage'] *= 1.10
+                                enemy.characteristics['health'] *= 1.10
+                                enemy.characteristics['speed'] *= 1.05
+                            else:
+                                enemy.characteristics['damage'] *= 1.05
+                                enemy.characteristics['health'] *= 1.05
+                                enemy.characteristics['speed'] *= 1.01
+                    else:
+                        enemy.current_hp -= self.player.characteristics['damage']
 
                 enemy.enemy_blinding = True
                 enemy.blinding_time = pygame.time.get_ticks()
@@ -111,10 +124,10 @@ class Weapon_for_players(pygame.sprite.Sprite):
 
 class Weapon_for_enemyis(Weapon_for_players):
     def __init__(self, game, robber, pos):
-        self.sword_up_images = [pygame.image.load("images/sword_up.png")]
-        self.sword_down_images = [pygame.image.load("images/sword_down.png")]
-        self.sword_left_images = [pygame.image.load("images/sword_left.png")]
-        self.sword_right_images = [pygame.image.load("images/sword_right.png")]
+        self.sword_up_images = [pygame.image.load("images/sword/sword_up.png")]
+        self.sword_down_images = [pygame.image.load("images/sword/sword_down.png")]
+        self.sword_left_images = [pygame.image.load("images/sword/sword_left.png")]
+        self.sword_right_images = [pygame.image.load("images/sword/sword_right.png")]
 
         self.game = game
         self.robber = robber
@@ -126,10 +139,10 @@ class Weapon_for_enemyis(Weapon_for_players):
         self.x = pos[0]
         self.y = pos[1]
 
-        self.image_up = pygame.image.load("images/sword_up.png")
-        self.image_down = pygame.image.load("images/sword_down.png")
-        self.image_left = pygame.image.load("images/sword_left.png")
-        self.image_right = pygame.image.load("images/sword_right.png")
+        self.image_up = pygame.image.load("images/sword/sword_up.png")
+        self.image_down = pygame.image.load("images/sword/sword_down.png")
+        self.image_left = pygame.image.load("images/sword/sword_left.png")
+        self.image_right = pygame.image.load("images/sword/sword_right.png")
         self.image = self.image_down
         self.rect = self.image.get_rect(center=self.robber.rect.center)
 
@@ -191,3 +204,44 @@ class Weapon_for_enemyis(Weapon_for_players):
             self.animation_frames_completed = True
         elif self.animation_frames_completed:
             self.kill()
+
+class Weapon_for_enemyis_boss(Weapon_for_enemyis):
+    def __init__(self, game, robber, pos):
+        self.sword_up_images = [pygame.image.load("images/sword/sword_up.png")]
+        self.sword_down_images = [pygame.image.load("images/sword/sword_down.png")]
+        self.sword_left_images = [pygame.image.load("images/sword/sword_left.png")]
+        self.sword_right_images = [pygame.image.load("images/sword/sword_right.png")]
+
+        self.game = game
+        self.robber = robber
+        self._layer = PLAYER_LAYER
+        self.loop = 1
+
+        self.groups = self.game.all_sprites
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.x = pos[0]
+        self.y = pos[1]
+
+        self.image_up = pygame.image.load("images/sword/sword_up.png")
+        self.image_down = pygame.image.load("images/sword/sword_down.png")
+        self.image_left = pygame.image.load("images/sword/sword_left.png")
+        self.image_right = pygame.image.load("images/sword/sword_right.png")
+        self.image = self.image_down
+        self.rect = self.image.get_rect(center=self.robber.rect.center)
+
+        self.players_hit = set()
+
+        self.animation_frames = {
+            (0, -1): self.image_up,
+            (1, -1): self.image_up,
+            (-1, 1): self.image_down,
+            (0, 1): self.image_down,
+            (1, 0): self.image_right,
+            (1, 1): self.image_right,
+            (-1, -1): self.image_left,
+            (-1, 0): self.image_left
+        }
+        self.animation_delay = 10
+        self.animation_timer = self.animation_delay
+        self.animation_frames_completed = False
+        self.damage_bool = False
