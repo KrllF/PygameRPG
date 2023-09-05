@@ -63,6 +63,7 @@ class User_Interface:
     def timer_upgrade(self):
         pass
 
+
     def upgrade_characteristic(self, characteristic_name):
         if self.player.leveling_points > 0:
             self.player.leveling_points -= 1

@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users
 db.close()
 
 
+
 def add_player(player_id):
     db = sqlite3.connect("statistics.db")
     cursor = db.cursor()

@@ -5,6 +5,7 @@ from config import *
 from weapon import Weapon_for_enemyis
 
 
+
 class robber(pygame.sprite.Sprite):
     def __init__(self, game, pos):
         self.game = game

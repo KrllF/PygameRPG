@@ -155,6 +155,7 @@ class SGAME:
             self.screen.blit(menu_buttom.image, menu_buttom.rect)
             self.screen.blit(self.font1.render("YOU DIED!!!", True, 'RED'), (460, 50))
 
+
             self.clock.tick(60)
             pygame.display.update()
 

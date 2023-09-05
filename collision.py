@@ -38,6 +38,7 @@ class BLOCK(pygame.sprite.Sprite):
         self.rect.y = self.y
 
 
+
 class Ground(pygame.sprite.Sprite):
     def __init__(self, game, pos):
         self.game = game

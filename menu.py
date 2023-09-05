@@ -31,6 +31,7 @@ class Menu_button:
         return False
 
 
+
 class Slider:
     def __init__(self, pos, size, initial_val, min, max):
         self.pos = pos

@@ -60,6 +60,7 @@ class Weapon_for_players(pygame.sprite.Sprite):
         elif self.player.view == [-1, 0]:
             self.rect.midright = self.player.rect.midleft
 
+
     def collide_with_enemy(self):
         hits = pygame.sprite.spritecollide(self, self.game.enemies, False)
         for i, enemy in enumerate(hits):

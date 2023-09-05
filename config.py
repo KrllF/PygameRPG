@@ -54,6 +54,8 @@ PLAYER_LAYER = 4
 
 
 
+
+
 ABOUT_GAME = "A walker with RPG elements. The goal of the game is to kill as many enemies on the map as possible. For "
 ABOUT_GAME1 = "killing you get experience. The more experience, the higher the level. The higher the level,the"
 ABOUT_GAME2 = "The higher the level, the easier it is to play, but the enemies also become stronger, so be careful!"
