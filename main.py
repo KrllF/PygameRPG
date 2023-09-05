@@ -153,6 +153,7 @@ class SGAME:
             self.screen.fill(BLACK)
             self.screen.blit(restart_buttom.image, restart_buttom.rect)
             self.screen.blit(menu_buttom.image, menu_buttom.rect)
+            self.screen.blit(self.font1.render("YOU DIED!!!", True, 'RED'), (460, 50))
 
             self.clock.tick(60)
             pygame.display.update()
@@ -223,9 +224,12 @@ class SGAME:
 
             if about_game_bool:
                 self.screen.blit(back.image, back.rect)
-                self.screen.blit(self.font.render(ABOUT_GAME, True, 'WHITE'), (10, 10))
-                self.screen.blit(self.font.render(ABOUT_GAME1, True, 'WHITE'), (10, 30))
-                self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), (10, 50))
+
+                self.screen.blit(self.font1.render("About game", True, 'WHITE'), (440, 50))
+                self.screen.blit(self.font.render(ABOUT_GAME, True, 'WHITE'), (20, 150))
+                self.screen.blit(self.font.render(ABOUT_GAME1, True, 'WHITE'), (20, 190))
+                self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), (20, 230))
+
 
             elif setting_bool:
                 mouse_pos = pygame.mouse.get_pos()

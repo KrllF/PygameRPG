@@ -54,9 +54,10 @@ PLAYER_LAYER = 4
 
 
 
-ABOUT_GAME = "Genre: Battle royale. From 2 to 4 players. The goal: to survive last. There are mobs on the map, killing which "
-ABOUT_GAME1 = "earns experience points, which go to improve characteristics, and money that goes to buy and improve  "
-ABOUT_GAME2 = "equipment. There is a boss on the map (like Roshan from Dota), killing which you get a bonus."
+ABOUT_GAME = "A walker with RPG elements. The goal of the game is to kill as many enemies on the map as possible. For "
+ABOUT_GAME1 = "killing you get experience. The more experience, the higher the level. The higher the level,the"
+ABOUT_GAME2 = "The higher the level, the easier it is to play, but the enemies also become stronger, so be careful!"
+
 
 
 layers_of_map = [

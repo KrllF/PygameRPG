@@ -116,7 +116,7 @@ class robber(pygame.sprite.Sprite):
     def field_of_vision(self, player):
         distance = math.sqrt(
             (player.rect.centerx - self.rect.centerx) ** 2 + (player.rect.centery - self.rect.centery) ** 2)
-        if distance < 4 * TILESIZE:
+        if distance < 8 * TILESIZE:
             return True
         else:
             return False

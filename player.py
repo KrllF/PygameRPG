@@ -226,6 +226,10 @@ class Player(pygame.sprite.Sprite):
     def draw_level(self):
         self.game.screen.blit(self.game.font.render(str(self.level), False, 1), (SIZE[0] // 2 - 20, SIZE[1] // 2 - 35))
 
+    def draw_leveling_point(self):
+        self.game.screen.blit(self.game.font.render(str(self.leveling_points), False, 1), (SIZE[0] // 2 - 40, SIZE[1] // 2 - 35))
+
+
     def regeneration(self):
         if self.current_hp < self.characteristics['health']:
             self.current_hp += 0.001 * self.characteristics['health']
