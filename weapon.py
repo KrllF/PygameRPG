@@ -65,7 +65,7 @@ class Weapon_for_players(pygame.sprite.Sprite):
                 if type(enemy).__name__ == "robber":
                     if enemy.current_hp - self.player.characteristics['damage'] <= 0:
                         enemy.current_hp -= self.player.characteristics['damage']
-                        self.player.exp += randint(80, 100)
+                        self.player.exp += randint(80, 100) + self.player.kill_for_session * 25
                         self.player.kill_for_session += 1
                         for enemy in self.game.enemies:
                             if type(enemy).__name__ == "robber":
@@ -82,7 +82,7 @@ class Weapon_for_players(pygame.sprite.Sprite):
                 if type(enemy).__name__ == "Robber_boss":
                     if enemy.current_hp - self.player.characteristics['damage'] <= 0:
                         enemy.current_hp -= self.player.characteristics['damage']
-                        self.player.exp += 300
+                        self.player.exp += 300 + self.player.kill_for_session * 25
                         self.player.kill_for_session += 1
                         for enemy in self.game.enemies:
                             if type(enemy).__name__ == "robber":
