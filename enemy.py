@@ -2,7 +2,9 @@ import pygame
 import math
 import random
 from config import *
-from weapon import Weapon_for_enemyis
+from weapon import *
+
+
 
 
 class robber(pygame.sprite.Sprite):
@@ -321,3 +323,37 @@ class Robber_boss(robber):
             return True
         else:
             return False
+
+    def robber_movements(self):
+        if pygame.time.get_ticks() - self.blinding_time > blindtime_robber:
+            self.blinding_time = False
+            self.cooldown_check = False
+            for player in self.game.players:
+                dist = math.sqrt(
+                    (player.rect.centerx - self.rect.centerx) ** 2 + (player.rect.centery - self.rect.centery) ** 2)
+                if self.field_of_vision(player):
+                    self.direction_vector = [player.rect.centerx - self.rect.centerx,
+                                             player.rect.centery - self.rect.centery]
+                else:
+                    self.direction_vector = [0, 0]
+
+                length = math.sqrt(self.direction_vector[0] ** 2 + self.direction_vector[1] ** 2)
+                if length != 0:
+                    self.direction_vector[0] /= length
+                    self.direction_vector[1] /= length
+                    self.view[0] = round(self.direction_vector[0])
+                    self.view[1] = round(self.direction_vector[1])
+                    self.direction_vector[0] = round(self.direction_vector[0], 1)
+                    self.direction_vector[1] = round(self.direction_vector[1], 1)
+                if dist > TILESIZE:
+                    self.rect.centerx += self.direction_vector[0] * self.characteristics['speed']
+                    self.rect.centery += self.direction_vector[1] * self.characteristics['speed']
+                else:
+                    if self.attack_checker():
+                        self.attack_time = pygame.time.get_ticks()
+                        Weapon_for_enemyis_boss(self.game, self, (self.x, self.y))
+
+        else:
+            self.view = [0, 0]
+            self.cooldown_check = True
+            self.direction_vector = [0, 0]

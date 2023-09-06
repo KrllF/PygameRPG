@@ -11,7 +11,8 @@ from database import *
 from random import randint
 
 pygame.display.set_caption('Against everyone')
-
+a = pygame.image.load("images/icon.png")
+pygame.display.set_icon(a)
 # data_base
 add_player(1)
 

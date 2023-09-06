@@ -124,10 +124,10 @@ class Weapon_for_players(pygame.sprite.Sprite):
 
 class Weapon_for_enemyis(Weapon_for_players):
     def __init__(self, game, robber, pos):
-        self.sword_up_images = [pygame.image.load("images/sword_for_player/sword_up.png")]
-        self.sword_down_images = [pygame.image.load("images/sword_for_player/sword_down.png")]
-        self.sword_left_images = [pygame.image.load("images/sword_for_player/sword_left.png")]
-        self.sword_right_images = [pygame.image.load("images/sword_for_player/sword_right.png")]
+        self.sword_up_images = [pygame.image.load("images/sword_for_robber/sword_up_robber.png")]
+        self.sword_down_images = [pygame.image.load("images/sword_for_robber/sword_down_robber.png")]
+        self.sword_left_images = [pygame.image.load("images/sword_for_robber/sword_left_robber.png")]
+        self.sword_right_images = [pygame.image.load("images/sword_for_robber/sword_right_robber.png")]
 
         self.game = game
         self.robber = robber
@@ -139,10 +139,10 @@ class Weapon_for_enemyis(Weapon_for_players):
         self.x = pos[0]
         self.y = pos[1]
 
-        self.image_up = pygame.image.load("images/sword_for_player/sword_up.png")
-        self.image_down = pygame.image.load("images/sword_for_player/sword_down.png")
-        self.image_left = pygame.image.load("images/sword_for_player/sword_left.png")
-        self.image_right = pygame.image.load("images/sword_for_player/sword_right.png")
+        self.image_up = pygame.image.load("images/sword_for_robber/sword_up_robber.png")
+        self.image_down = pygame.image.load("images/sword_for_robber/sword_down_robber.png")
+        self.image_left = pygame.image.load("images/sword_for_robber/sword_left_robber.png")
+        self.image_right = pygame.image.load("images/sword_for_robber/sword_right_robber.png")
         self.image = self.image_down
         self.rect = self.image.get_rect(center=self.robber.rect.center)
 
@@ -207,10 +207,10 @@ class Weapon_for_enemyis(Weapon_for_players):
 
 class Weapon_for_enemyis_boss(Weapon_for_enemyis):
     def __init__(self, game, robber, pos):
-        self.sword_up_images = [pygame.image.load("images/sword_for_player/sword_up.png")]
-        self.sword_down_images = [pygame.image.load("images/sword_for_player/sword_down.png")]
-        self.sword_left_images = [pygame.image.load("images/sword_for_player/sword_left.png")]
-        self.sword_right_images = [pygame.image.load("images/sword_for_player/sword_right.png")]
+        self.sword_up_images = [pygame.image.load("images/sword_for_robber_boss/sword_up_robber_boss.png")]
+        self.sword_down_images = [pygame.image.load("images/sword_for_robber_boss/sword_down_robber_boss.png")]
+        self.sword_left_images = [pygame.image.load("images/sword_for_robber_boss/sword_left_robber_boss.png")]
+        self.sword_right_images = [pygame.image.load("images/sword_for_robber_boss/sword_right_robber_boss.png")]
 
         self.game = game
         self.robber = robber
@@ -222,14 +222,10 @@ class Weapon_for_enemyis_boss(Weapon_for_enemyis):
         self.x = pos[0]
         self.y = pos[1]
 
-        self.image_up = pygame.image.load("images/sword_for_robber/sword_up.png")
-        self.image_up.set_colorkey(WHITE)
-        self.image_down = pygame.image.load("images/sword_for_robber/sword_down.png")
-        self.image_down.set_colorkey(WHITE)
-        self.image_left = pygame.image.load("images/sword_for_robber/sword_left.png")
-        self.image_left.set_colorkey(WHITE)
-        self.image_right = pygame.image.load("images/sword_for_robber/sword_right.png")
-        self.image_right.set_colorkey(WHITE)
+        self.image_up = pygame.image.load("images/sword_for_robber_boss/sword_up_robber_boss.png")
+        self.image_down = pygame.image.load("images/sword_for_robber_boss/sword_down_robber_boss.png")
+        self.image_left = pygame.image.load("images/sword_for_robber_boss/sword_left_robber_boss.png")
+        self.image_right = pygame.image.load("images/sword_for_robber_boss/sword_right_robber_boss.png")
         self.image = self.image_down
         self.rect = self.image.get_rect(center=self.robber.rect.center)
 
