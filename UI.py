@@ -33,7 +33,7 @@ class User_Interface:
         # exp
 
         pygame.draw.rect(self.player.game.screen, 'yellow',
-                         (self.player.game.w // 2 - 8, self.player.game.h // 2 - 25, self.player.exp // 2 / (
+                         (self.player.game.w // 2 - 8, self.player.game.h // 2 - 25, (self.player.exp % 200) // 2 / (
                                  self.player.characteristics['health'] / self.player.health_bar_length), 5))
 
         pygame.draw.rect(self.player.game.screen, (255, 255, 255),
@@ -98,22 +98,25 @@ class User_Interface:
         self.player.game.screen.blit(self.health_image1, self.health_image_rect)
 
         self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['health']), True, 'BLACK'),
-                                     ((self.player.game.w - 600) / 4 + 95, self.health_image_rect.y + self.health_image_rect.height + 45))
+                                     ((self.player.game.w - 600) / 4 + 95,
+                                      self.health_image_rect.y + self.health_image_rect.height + 45))
         # speed
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.speed_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.speed_image_rect, 4)
         self.player.game.screen.blit(self.speed_image, self.speed_image_rect)
 
         self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['speed']), True, 'BLACK'),
-                                     ((self.player.game.w - 600) / 2 + 295, self.health_image_rect.y + self.health_image_rect.height + 45))
+                                     ((self.player.game.w - 600) / 2 + 295,
+                                      self.health_image_rect.y + self.health_image_rect.height + 45))
 
-        #damage
+        # damage
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.damage_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.damage_image_rect, 4)
         self.player.game.screen.blit(self.damage_image, self.damage_image_rect)
 
         self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['damage']), True, 'BLACK'),
-                                     ((self.player.game.w - 600) * 3 / 4 + 495, self.health_image_rect.y + self.health_image_rect.height + 45))
+                                     ((self.player.game.w - 600) * 3 / 4 + 495,
+                                      self.health_image_rect.y + self.health_image_rect.height + 45))
 
         self.buttons_upgrade.update()
 
