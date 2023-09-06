@@ -20,7 +20,7 @@ class SGAME:
         pygame.init()
         self.game_over_bool = False
         self.FPS = FPS
-        self.screen = pygame.display.set_mode(SIZE)
+        self.screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.running = True
         self.start_game_time = None
@@ -30,7 +30,8 @@ class SGAME:
         self.enemy_boss_spritesheet = Spritesheet("images/enemy_boss.png", "WHITE")
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
         self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)
-
+        self.w, self.h = pygame.display.get_surface().get_size()
+        print(self.w, self.h)
         # map
 
         self.floor_surface = pygame.image.load('images/map/map_bg.png').convert()
@@ -81,7 +82,7 @@ class SGAME:
         pygame.display.update()
 
     def camera(self):
-        offset = pygame.math.Vector2(self.player.rect.centerx - SIZE[0] // 2, self.player.rect.centery - SIZE[1] // 2)
+        offset = pygame.math.Vector2(self.player.rect.centerx - self.w // 2, self.player.rect.centery - self.h // 2)
         floor_offset_rect = self.floor_rect.topleft - offset
         floor_fix_offset_rect = self.floor_fix_rect.topleft - offset
         self.screen.blit(self.floor_fix, floor_fix_offset_rect)
@@ -140,8 +141,8 @@ class SGAME:
         self.running = False
 
     def game_over(self):
-        restart_buttom = Menu_button((415, 300), 250, 100, BLACK, WHITE, 'Restart', 32, 2)
-        menu_buttom = Menu_button((490, 500), 100, 50, BLACK, WHITE, 'Menu', 32, 2)
+        restart_buttom = Menu_button(((self.w - 250) / 2, 300), 250, 100, BLACK, WHITE, 'Restart', 32, 2)
+        menu_buttom = Menu_button(((self.w - 100) / 2, 500), 100, 50, BLACK, WHITE, 'Menu', 32, 2)
         game_over_bool = True
         for sprite in self.all_sprites:
             sprite.kill()
@@ -172,28 +173,33 @@ class SGAME:
             self.screen.fill(BLACK)
             self.screen.blit(restart_buttom.image, restart_buttom.rect)
             self.screen.blit(menu_buttom.image, menu_buttom.rect)
-            self.screen.blit(self.font1.render("YOU DIED!!!", True, 'RED'), (460, 50))
-
+            self.screen.blit(self.font1.render("YOU DIED!!!", True, 'RED'), ((self.w - 184) / 2, 50))
             self.clock.tick(60)
             pygame.display.update()
 
     def menu(self):
-        local_game = Menu_button((415, 50), 250, 100, BLACK, WHITE, 'Play', 32, 2)
-        about_game = Menu_button((415, 200), 250, 100, BLACK, WHITE, 'About game', 32, 2)
-        setting = Menu_button((415, 350), 250, 100, BLACK, WHITE, 'Setting', 32, 2)
-        exit_game = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)
-        back = Menu_button((415, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
-        statistics_game = Menu_button((800, 50), 200, 100, BLACK, WHITE, 'Statistics', 32, 2)
-        reset_kills_game = Menu_button((800, 130), 120, 50, BLACK, WHITE, 'Reset kills', 32, 2)
-        reset_play_time_game = Menu_button((800, 230), 120, 50, BLACK, WHITE, 'Reset time', 32, 2)
-        reset_number_of_attempts_game = Menu_button((800, 330), 120, 50, BLACK, WHITE, 'Reset NOA', 32, 2)
-        reset_max_kills_game = Menu_button((800, 430), 120, 50, BLACK, WHITE, 'Reset mkills', 32, 2)
-        sliderFPS = Slider((SIZE[0] // 2, SIZE[1] // 2 - 100), (200, 50), 0.5, 30, 120)
+        # main menu
+        local_game = Menu_button(((self.w - 250) / 2, 50), 250, 100, BLACK, WHITE, 'Play', 32, 2)
+        about_game = Menu_button(((self.w - 250) / 2, 200), 250, 100, BLACK, WHITE, 'About game', 32, 2)
+        setting = Menu_button(((self.w - 250) / 2, 350), 250, 100, BLACK, WHITE, 'Setting', 32, 2)
+        exit_game = Menu_button(((self.w - 250) / 2, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)
+        back = Menu_button(((self.w - 250) / 2, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
+        statistics_game = Menu_button(((self.w - 250) * 9 / 10, 50), 150, 100, BLACK, WHITE, 'Statistics', 32, 2)
 
+        # statistics
+        reset_kills_game = Menu_button((self.w * 7 / 8, 130), 120, 50, BLACK, WHITE, 'Reset kills', 32, 2)
+        reset_play_time_game = Menu_button((self.w * 7 / 8, 230), 120, 50, BLACK, WHITE, 'Reset time', 32, 2)
+        reset_number_of_attempts_game = Menu_button((self.w * 7 / 8, 330), 120, 50, BLACK, WHITE, 'Reset NOA', 32, 2)
+        reset_max_kills_game = Menu_button((self.w * 7 / 8, 430), 120, 50, BLACK, WHITE, 'Reset mkills', 32, 2)
+        statistics_bool = False
+
+        # settings
+        sliderFPS = Slider((self.w / 2, self.h / 3), (200, 50), 0.5, 30, 120)
+        setting_bool = False
+
+        # bool
         intro = True
         about_game_bool = False
-        setting_bool = False
-        statistics_bool = False
 
         while intro:
             events = pygame.event.get()
@@ -247,11 +253,10 @@ class SGAME:
             if about_game_bool:
                 self.screen.blit(back.image, back.rect)
 
-                self.screen.blit(self.font1.render("About game", True, 'WHITE'), (440, 50))
-                self.screen.blit(self.font.render(ABOUT_GAME, True, 'WHITE'), (20, 150))
-                self.screen.blit(self.font.render(ABOUT_GAME1, True, 'WHITE'), (20, 190))
-                self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), (20, 230))
-
+                self.screen.blit(self.font1.render("About game", True, 'WHITE'), ((self.w - 208) / 2, 50))
+                self.screen.blit(self.font.render(ABOUT_GAME, True, 'WHITE'), ((self.w - 1024) / 2, 150))
+                self.screen.blit(self.font.render(ABOUT_GAME1, True, 'WHITE'), ((self.w - 886) / 2, 190))
+                self.screen.blit(self.font.render(ABOUT_GAME2, True, 'WHITE'), ((self.w - 938) / 2, 230))
 
             elif setting_bool:
                 mouse_pos = pygame.mouse.get_pos()
@@ -259,16 +264,15 @@ class SGAME:
                 if sliderFPS.container_rect.collidepoint(mouse_pos) and mouse_press[0]:
                     sliderFPS.move_slider(mouse_pos)
 
-                self.screen.blit(self.font1.render("SETTING", True, 'WHITE'), (470, 50))
+                self.screen.blit(self.font1.render("SETTING", True, 'WHITE'), ((self.w - 144) / 2, 50))
                 sliderFPS.render(self)
                 self.FPS = sliderFPS.get_value()
-                self.screen.blit(self.font.render("FPS:", True, 'WHITE'), (300, SIZE[1] // 2 - 115))
+                self.screen.blit(self.font.render("FPS:", True, 'WHITE'), ((self.w - 284) / 2, (self.h - 50) / 3))
                 self.screen.blit(self.font.render("Game acceleration:", True, 'WHITE'),
-                                 (SIZE[0] // 2 - 85, SIZE[1] // 2 - 175))
+                                 ((self.w - 170) // 2, self.h // 3 - 70))
 
                 self.screen.blit(self.font.render(str(int(sliderFPS.get_value())), True, 'WHITE'),
-                                 (SIZE[0] // 2 - 8, SIZE[1] // 2 - 60))
-
+                                 ((self.w - 22) // 2, (self.h + 62) / 3))
                 self.screen.blit(back.image, back.rect)
             elif statistics_bool:
                 self.screen.blit(back.image, back.rect)
@@ -276,19 +280,18 @@ class SGAME:
                 self.screen.blit(reset_play_time_game.image, reset_play_time_game.rect)
                 self.screen.blit(reset_number_of_attempts_game.image, reset_number_of_attempts_game.rect)
                 self.screen.blit(reset_max_kills_game.image, reset_max_kills_game.rect)
-                self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), (440, 50))
+                self.screen.blit(self.font1.render("STATISTICS", True, 'WHITE'), ((self.w - 204) / 2, 50))
+                self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 130))
+                self.screen.blit(self.font.render(str(get_kills(1)), True, 'WHITE'), (170, 130))
 
-                self.screen.blit(self.font.render("KILLS:", True, 'WHITE'), (100, 150))
-                self.screen.blit(self.font.render(str(get_kills(1)), True, 'WHITE'), (170, 150))
+                self.screen.blit(self.font.render("PLAY TIME:", True, 'WHITE'), (100, 230))
+                self.screen.blit(self.font.render(str(get_play_time(1)) + ' sec', True, 'WHITE'), (230, 230))
 
-                self.screen.blit(self.font.render("PLAY TIME:", True, 'WHITE'), (100, 250))
-                self.screen.blit(self.font.render(str(get_play_time(1)) + ' sec', True, 'WHITE'), (230, 250))
+                self.screen.blit(self.font.render("NUMBER OF ATTEMPTS:", True, 'WHITE'), (100, 330))
+                self.screen.blit(self.font.render(str(get_number_of_attempts(1)), True, 'WHITE'), (320, 330))
 
-                self.screen.blit(self.font.render("NUMBER OF ATTEMPTS:", True, 'WHITE'), (100, 350))
-                self.screen.blit(self.font.render(str(get_number_of_attempts(1)), True, 'WHITE'), (320, 350))
-
-                self.screen.blit(self.font.render("MAX KILLS:", True, 'WHITE'), (100, 450))
-                self.screen.blit(self.font.render(str(get_max_kills(1)), True, 'WHITE'), (220, 450))
+                self.screen.blit(self.font.render("MAX KILLS:", True, 'WHITE'), (100, 430))
+                self.screen.blit(self.font.render(str(get_max_kills(1)), True, 'WHITE'), (220, 430))
 
 
             else:

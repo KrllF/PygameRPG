@@ -216,18 +216,18 @@ class Player(pygame.sprite.Sprite):
 
     def health_bar(self):
         pygame.draw.rect(self.game.screen, (255, 0, 0),
-                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 20,
+                         (self.game.w // 2 - 8, self.game.h // 2 - 20,
                           self.current_hp / (self.characteristics['health'] / self.health_bar_length), 5))
         pygame.draw.rect(self.game.screen, (255, 255, 255),
-                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 20,
+                         (self.game.w // 2 - 8, self.game.h // 2 - 20,
                           self.characteristics['health'] / (self.characteristics['health'] / self.health_bar_length),
                           5), True)
 
     def draw_level(self):
-        self.game.screen.blit(self.game.font.render(str(self.level), False, 1), (SIZE[0] // 2 - 20, SIZE[1] // 2 - 35))
+        self.game.screen.blit(self.game.font.render(str(self.level), False, 1), (self.game.w // 2 - 20, self.game.h // 2 - 35))
 
     def draw_leveling_point(self):
-        self.game.screen.blit(self.game.font.render(str(self.leveling_points), False, 1), (SIZE[0] // 2 - 40, SIZE[1] // 2 - 35))
+        self.game.screen.blit(self.game.font.render(str(self.leveling_points), False, 1), (self.game.w // 2 - 40, self.game.h // 2 - 35))
 
 
 

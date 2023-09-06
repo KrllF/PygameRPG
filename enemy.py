@@ -317,7 +317,7 @@ class Robber_boss(robber):
     def field_of_vision(self, player):
         distance = math.sqrt(
             (player.rect.centerx - self.rect.centerx) ** 2 + (player.rect.centery - self.rect.centery) ** 2)
-        if distance < 15 * TILESIZE:
+        if distance < 10 * TILESIZE:
             return True
         else:
             return False

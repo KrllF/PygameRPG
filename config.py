@@ -1,7 +1,7 @@
 
 from working_with_csv_files import read_csv
-
 SIZE = (1080, 720)
+
 TILESIZE = 32
 FPS = 60
 FONT = 'fonts/Oswald-Medium.ttf'

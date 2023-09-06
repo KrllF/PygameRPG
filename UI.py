@@ -23,9 +23,9 @@ class User_Interface:
         self.damage_image = pygame.transform.scale(
             pygame.image.load('images/skill_upgrade/damage.png').convert_alpha(), (200, 250))
 
-        self.health_image_rect = self.health_image1.get_rect(topleft=(250, 200))
-        self.damage_image_rect = self.damage_image.get_rect(topleft=(650, 200))
-        self.speed_image_rect = self.speed_image.get_rect(topleft=(450, 200))
+        self.health_image_rect = self.health_image1.get_rect(topleft=((self.player.game.w - 600) / 4, 200))
+        self.speed_image_rect = self.speed_image.get_rect(topleft=((self.player.game.w - 600) / 2 + 200, 200))
+        self.damage_image_rect = self.damage_image.get_rect(topleft=((self.player.game.w - 600) * 3 / 4 + 400, 200))
         self.buttons_upgrade = pygame.sprite.Group()
         self.create_buttons_upgrade()
 
@@ -33,26 +33,31 @@ class User_Interface:
         # exp
 
         pygame.draw.rect(self.player.game.screen, 'yellow',
-                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 25, self.player.exp // 2 / (
+                         (self.player.game.w // 2 - 8, self.player.game.h // 2 - 25, self.player.exp // 2 / (
                                  self.player.characteristics['health'] / self.player.health_bar_length), 5))
 
         pygame.draw.rect(self.player.game.screen, (255, 255, 255),
-                         (SIZE[0] // 2 - 8, SIZE[1] // 2 - 25,
+                         (self.player.game.w // 2 - 8, self.player.game.h // 2 - 25,
                           self.player.characteristics['health'] / (
                                   self.player.characteristics['health'] / self.player.health_bar_length),
                           5), True)
 
     def draw_kill_for_session(self):
         self.player.game.screen.blit(self.font.render("KILL: " + str(self.player.kill_for_session), True, 'WHITE'),
-                                     (SIZE[0] // 2 - 20, 50))
+                                     ((self.player.game.w - 62) // 2, 50))
 
     def draw_number_of_enemy(self):
-        self.player.game.screen.blit(self.font.render("ENEMYIS: " + str(len(self.player.game.enemies)), True, 'WHITE'),
-                                     (SIZE[0] // 2 - 20, 80))
+        self.player.game.screen.blit(self.font.render("ENEMIES: " + str(len(self.player.game.enemies)), True, 'WHITE'),
+                                     ((self.player.game.w - 104) // 2, 80))
+
+    def draw_leveling_points(self):
+        self.player.game.screen.blit(
+            self.font.render("LEVELING POINTS: " + str(self.player.leveling_points), True, 'WHITE'),
+            ((self.player.game.w - 176) // 2, 110))
 
     def create_buttons_upgrade(self):
         for i in range(3):
-            self.buttons_upgrade.add(Button_and_name((self.health_image_rect.x + i * 200,
+            self.buttons_upgrade.add(Button_and_name(((self.player.game.w - 600) / 4 * (i + 1) + i * 200,
                                                       self.health_image_rect.y + self.health_image_rect.height),
                                                      list(self.player.characteristics.keys())[i]))
 
@@ -91,23 +96,24 @@ class User_Interface:
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.health_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.health_image_rect, 4)
         self.player.game.screen.blit(self.health_image1, self.health_image_rect)
+
         self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['health']), True, 'BLACK'),
-                                     (346, self.health_image_rect.y + self.health_image_rect.height + 45))
-        # melee_attack
+                                     ((self.player.game.w - 600) / 4 + 95, self.health_image_rect.y + self.health_image_rect.height + 45))
+        # speed
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.speed_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.speed_image_rect, 4)
         self.player.game.screen.blit(self.speed_image, self.speed_image_rect)
-        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['speed']), True, 'BLACK'),
-                                     (546, self.health_image_rect.y + self.health_image_rect.height + 45))
 
+        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['speed']), True, 'BLACK'),
+                                     ((self.player.game.w - 600) / 2 + 295, self.health_image_rect.y + self.health_image_rect.height + 45))
+
+        #damage
         pygame.draw.rect(self.player.game.screen, (64, 64, 64), self.damage_image_rect)
         pygame.draw.rect(self.player.game.screen, '#AE6524', self.damage_image_rect, 4)
         self.player.game.screen.blit(self.damage_image, self.damage_image_rect)
-        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['damage']), True, 'BLACK'),
-                                     (746, self.health_image_rect.y + self.health_image_rect.height + 45))
 
-        self.player.game.screen.blit(self.font.render("leveling points: " + str(self.player.leveling_points), True, 'white'),
-                                     (SIZE[0] // 2-50, 100))
+        self.player.game.screen.blit(self.font.render(str(self.player.characteristics_level['damage']), True, 'BLACK'),
+                                     ((self.player.game.w - 600) * 3 / 4 + 495, self.health_image_rect.y + self.health_image_rect.height + 45))
 
         self.buttons_upgrade.update()
 
@@ -115,6 +121,7 @@ class User_Interface:
         self.draw_bars_of_characteristics()
         self.draw_kill_for_session()
         self.draw_number_of_enemy()
+        self.draw_leveling_points()
 
 
 class Button_and_name(pygame.sprite.Sprite):
@@ -138,5 +145,4 @@ class Button_and_name(pygame.sprite.Sprite):
             self.click = not self.click
 
     def update(self):
-
         self.cooldown()
