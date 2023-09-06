@@ -8,8 +8,9 @@ from player import *
 from collision import Spritesheet
 from enemy import *
 from database import *
+from random import randint
 
-pygame.display.set_caption('GAME WITH RPG ELEMENTS')
+pygame.display.set_caption('Against everyone')
 
 # data_base
 add_player(1)
@@ -20,8 +21,10 @@ class SGAME:
         pygame.init()
         self.game_over_bool = False
         self.FPS = FPS
-        self.screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
+
         self.clock = pygame.time.Clock()
+        self.full_screen = True
+        self.screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
         self.running = True
         self.start_game_time = None
         self.end_game_time = None
@@ -31,7 +34,7 @@ class SGAME:
         self.font = pygame.font.Font('fonts/EightBits.ttf', 32)
         self.font1 = pygame.font.Font('fonts/EightBits.ttf', 64)
         self.w, self.h = pygame.display.get_surface().get_size()
-        print(self.w, self.h)
+
         # map
 
         self.floor_surface = pygame.image.load('images/map/map_bg.png').convert()
@@ -69,7 +72,7 @@ class SGAME:
 
         self.create_map()
 
-        self.player = Player(self, (20, 10))
+        self.player = Player(self, (15, 20))
 
     def events(self):
         for event in pygame.event.get():
@@ -100,9 +103,6 @@ class SGAME:
             self.screen.blit(sprite.image, offset_of_sprite)
 
     def draw(self):
-        self.screen.fill(BLACK)
-        # для карты временно
-
         self.camera()
         self.clock.tick(self.FPS)
 
@@ -185,13 +185,14 @@ class SGAME:
         exit_game = Menu_button(((self.w - 250) / 2, 500), 250, 100, BLACK, WHITE, 'Exit', 32, 2)
         back = Menu_button(((self.w - 250) / 2, 500), 250, 100, BLACK, WHITE, 'Back', 32, 2)
         statistics_game = Menu_button(((self.w - 250) * 9 / 10, 50), 150, 100, BLACK, WHITE, 'Statistics', 32, 2)
-
+        #full_screen_game = Menu_button(((self.w - 150) / 2, 400), 150, 50, BLACK, WHITE, 'Full screen', 32, 2)
         # statistics
         reset_kills_game = Menu_button((self.w * 7 / 8, 130), 120, 50, BLACK, WHITE, 'Reset kills', 32, 2)
         reset_play_time_game = Menu_button((self.w * 7 / 8, 230), 120, 50, BLACK, WHITE, 'Reset time', 32, 2)
         reset_number_of_attempts_game = Menu_button((self.w * 7 / 8, 330), 120, 50, BLACK, WHITE, 'Reset NOA', 32, 2)
         reset_max_kills_game = Menu_button((self.w * 7 / 8, 430), 120, 50, BLACK, WHITE, 'Reset mkills', 32, 2)
         statistics_bool = False
+
 
         # settings
         sliderFPS = Slider((self.w / 2, self.h / 3), (200, 50), 0.5, 30, 120)
@@ -207,6 +208,7 @@ class SGAME:
                 if event.type == pygame.QUIT:
                     intro = False
                     self.running = False
+
 
             mouse_pos = pygame.mouse.get_pos()
 
@@ -248,6 +250,9 @@ class SGAME:
                     pygame.quit()
                     sys.exit()
 
+               # if full_screen_game.is_pressed(mouse_pos, events):
+                #    pass
+
             self.screen.fill(BLACK)
 
             if about_game_bool:
@@ -261,6 +266,8 @@ class SGAME:
             elif setting_bool:
                 mouse_pos = pygame.mouse.get_pos()
                 mouse_press = pygame.mouse.get_pressed()
+             #   self.screen.blit(full_screen_game.image, full_screen_game.rect)
+
                 if sliderFPS.container_rect.collidepoint(mouse_pos) and mouse_press[0]:
                     sliderFPS.move_slider(mouse_pos)
 
